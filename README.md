@@ -10,7 +10,7 @@ See comments in code
 ### Usage ###
 
 ```
-pip install git+
+pip install git+https://github.com/nextgis/pyngw.git
 
 import pyngw
 
