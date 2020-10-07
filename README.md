@@ -21,20 +21,28 @@ print(ngwapi.get_childs_resources(0))
 
 # Examples
 
+## Get JSON description of resource
+
+```
+ngwapi.get_resource(resource_id)
+```
+```
+ngwapi.get_childs_resources(resource_id)
+```
+
+
 ## Upload QML styles by names
 В NGW загружены векторные слои. Добавить к ним стили, которые лежат на диске с совпадающими названиями
 
 ```
-        ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
-        ngwapi.upload_qmls_byname(group_id,'qml')
+
+ ngwapi.upload_qmls_byname(group_id,'qml')
 
 ```
 
 ## Create webmap for group
 
 ```
-    def create_webmap(self,group_id):
-        ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
         ngwapi.create_webmap_from_group(group_id=group_id)
 
  ```
@@ -42,7 +50,7 @@ print(ngwapi.get_childs_resources(0))
 ## Get list of layer id for webmap
 
 ```
-        ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
+
          
         style_ids = ngwapi.get_styles_from_webmap_top(webmap_id) #only top-level of webmap now processed
 ```
@@ -59,9 +67,7 @@ print(ngwapi.get_childs_resources(0))
             "track_changes": False,
             "seed_z": None
           }}
- 
-        ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
-         
+
         style_ids = ngwapi.get_styles_from_webmap_top(webmap_id)
         for style_id in style_ids:
             print('update '+str(style_id)) 
@@ -81,9 +87,6 @@ dorogi_pln.qml
 dorsoor_ln.qml
 '''
 
-
-ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
-
 #Search for frist webmap in resource group
 webmaps = ngwapi.search_by_cls(GROUP_ID,'webmap')
 assert webmaps is not None
@@ -102,8 +105,6 @@ ngwapi.webmap_reorder_layers_by_list(webmap,orderlist)
 
 Upload geojson or shapefile zip to group 0, name will auto-generated
 ```
-ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
-
 ngwapi.upload_vector_layer(filepath='data.geojson',group_id=0, display_name='')
 
 ```
@@ -112,7 +113,6 @@ ngwapi.upload_vector_layer(filepath='data.geojson',group_id=0, display_name='')
 
 Upload vector layer in any ogr compatible format using ogr2ogr. Wrap for long ogr2ogr call string
 ```
-ngwapi = ngw_simple_api.Ngw_simple_api(ngw_url=config.ngw_url,login=config.ngw_creds[0],password=config.ngw_creds[1])
 
 ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
                                    group_id=0, 
