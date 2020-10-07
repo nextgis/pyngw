@@ -11,12 +11,12 @@ See comments in code
 
 ```
 pip install git+https://github.com/nextgis/pyngw.git
-
+```
+```
 import pyngw
 
 ngwapi = pyngw.Pyngw(ngw_url='https://sandbox.nextgis.com',login='administrator',password='demodemo')
 print(ngwapi.get_childs_resources(0))
-
 ```
 
 # Examples
@@ -35,23 +35,27 @@ ngwapi.get_childs_resources(resource_id)
 В NGW загружены векторные слои. Добавить к ним стили, которые лежат на диске с совпадающими названиями
 
 ```
-
  ngwapi.upload_qmls_byname(group_id,'qml')
+```
+
+## GET TMS url
 
 ```
+ngwapi.get_TMS_url(style_id)
+
+http://trolleway.nextgis.com/api/component/render/tile?z={z}&x={x}&y={y}&resource=72
+```
+
 
 ## Create webmap for group
 
 ```
         ngwapi.create_webmap_from_group(group_id=group_id)
-
  ```
 
 ## Get list of layer id for webmap
 
 ```
-
-         
         style_ids = ngwapi.get_styles_from_webmap_top(webmap_id) #only top-level of webmap now processed
 ```
 
