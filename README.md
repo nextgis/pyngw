@@ -15,7 +15,7 @@ pip install git+https://github.com/nextgis/pyngw.git
 ```
 import pyngw
 
-ngwapi = pyngw.Pyngw(ngw_url='https://sandbox.nextgis.com',login='administrator',password='demodemo')
+ngwapi = pyngw.Pyngw(ngw_url = 'https://sandbox.nextgis.com', login = 'administrator', password = 'demodemo')
 print(ngwapi.get_childs_resources(0))
 ```
 
