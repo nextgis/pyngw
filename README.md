@@ -173,7 +173,7 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
 ## Search and helpers
 
 * get_resource
-* get_childs_resources
+* get_childs_resources(resource_group_id)
 * search_group_by_name
 * search_by_cls
 * get_layers4webmap
@@ -186,7 +186,7 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
 
 * replace_qgis_style
 * webmap_reorder_layers_by_list
-* update_resource_payload
+* update_resource_payload(resource_id,payload,skip_errors=True)
 
 ## Create
 
