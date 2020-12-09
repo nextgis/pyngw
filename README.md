@@ -175,7 +175,7 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
 * get_resource
 * get_childs_resources(resource_group_id)
 * search_group_by_name
-* search_by_cls
+* search_by_cls(group_id=0,cls='webmap')
 * get_layers4webmap
 * download_vector_layer
 * get_TMS_url
