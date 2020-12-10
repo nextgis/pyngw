@@ -525,7 +525,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         
     def create_webmap_from_group(self,group_id,display_name=''):
         childrens = self.get_layers4webmap(group_id)
-        self.create_webmap(group_id,childrens,display_name)
+        return self.create_webmap(group_id,childrens,display_name)
         
     def create_webmap(self,group_id,childrens,display_name=''):
         """[Create webmap]
