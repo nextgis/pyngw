@@ -191,8 +191,8 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
 ## Create
 
 * create_vector_feature
-* create_resource_group
-* upload_vector_layer_ogr2ogr
+* create_resource_group(parent_id=0, display_name='') #can generate random group name, useful for developing)
+* upload_vector_layer_ogr2ogr(filepath,group_id,display_name='',layer=None, geometry_type = None)
 * upload_vector_layer
 * create_postgis_connection
 * create_postgis_layer
