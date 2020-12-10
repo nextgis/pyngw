@@ -221,8 +221,8 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
 * upload_geojson
 * create_raster_style
 * upload_qgis_style
-* create_webmap
-* create_webmap_from_group
+* create_webmap(group_id,childrens,display_name='') #create webmap from list of children, as return from ngw REST API
+* create_webmap_from_group(group_id,display_name='')
 * upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml 
 
 # Delete
