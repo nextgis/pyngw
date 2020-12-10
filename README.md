@@ -58,6 +58,23 @@ http://trolleway.nextgis.com/api/component/render/tile?z={z}&x={x}&y={y}&resourc
 ```
         style_ids = ngwapi.get_styles_from_webmap_top(webmap_id) #only top-level of webmap now processed
 ```
+## Set some parameters for all resources in group with some cls
+
+```
+group_id = 936
+svg_marker_library = 853
+layers = ngwapi.get_childs_resources(group_id)
+
+change_payload = {'qgis_vector_style':{'svg_marker_library':{'id':svg_marker_library}}}
+
+for layer in layers:   
+    subs = ngwapi.get_childs_resources(layer['resource']['id'])
+    for sub in subs:
+        if sub['resource']['cls'] == 'qgis_vector_style':
+            print(sub['resource']['display_name'])
+            ngwapi.update_resource_payload(sub['resource']['id'],change_payload)
+            
+```
 
 ## Update vector layer parameters for all layers in webmap
 
