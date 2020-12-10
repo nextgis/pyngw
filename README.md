@@ -223,7 +223,7 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
 * upload_qgis_style
 * create_webmap
 * create_webmap_from_group
-* upload_qmls_byname
+* upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml 
 
 # Delete
 
