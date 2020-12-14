@@ -34,6 +34,8 @@ class Pyngw:
         self.login=login
         self.password=password
         self.ngw_creds=(self.login,self.password)
+        
+        if self.ngw_url.endswith('/'): raise ValueError('ngw_url should not ended with "/" ')
 
     def search_group_by_name(self,name,group_id=0):
         GROUPNAME = name
