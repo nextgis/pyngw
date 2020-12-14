@@ -131,7 +131,7 @@ class Pyngw:
         group_id = response['id']
         return int(group_id)
 
-    def upload_vector_layer_ogr2ogr(self,filepath,group_id,display_name='',layer=None, geometry_type = None):
+    def upload_vector_layer_ogr2ogr(self,filepath,group_id,display_name='',layer=None, geometry_type = None, batch_size=200):
         import os
         
         if display_name == '': display_name = self.generate_name()
@@ -150,12 +150,13 @@ class Pyngw:
         else:
             nlt = ''
         
-        cmd = 'ogr2ogr -f NGW -skipfailures -progress -update -dim XY -doo "BATCH_SIZE=200" {nlt}  -nln {nln} -doo "USERPWD={login}:{password}" -t_srs EPSG:3857 "NGW:{url}/resource/{group_id}" {filename}'
+        cmd = 'ogr2ogr -f NGW -skipfailures -progress -update -dim XY -doo "BATCH_SIZE={BATCH_SIZE}" {nlt}  -nln {nln} -doo "USERPWD={login}:{password}" -t_srs EPSG:3857 "NGW:{url}/resource/{group_id}" {filename}'
         cmd = cmd.format(url=self.ngw_url, display_name=display_name,login=self.login,password=self.password, 
         group_id=group_id,
         new_group_name=new_group_name,
         filename=filepath,
         nlt = nlt,
+        BATCH_SIZE = batch_size,
         nln = layer)
         #cmd = cmd + ' ' + '
         if layer is not None: cmd = cmd +' ' + layer
