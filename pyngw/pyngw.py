@@ -521,7 +521,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             element=dict()
             element['layer_adapter']='tile'
             element['display_name']=layer['resource']['display_name']
-            if namesource = 'children': element['display_name'] = children_name
+            if namesource == 'children': element['display_name'] = children_name
             element['layer_style_id']=layer_style_id
             element['layer_enabled']=True
             element['item_type']='layer'
