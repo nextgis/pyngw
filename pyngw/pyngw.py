@@ -503,7 +503,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
 
    '''   
 
-    def get_layers4webmap(self, group_id):
+    def get_layers4webmap(self, group_id,namesource=''):
         """
         Return list with layers for create_webmap 
         """
@@ -516,10 +516,12 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             for subelement in children_grand:
                 if subelement['resource']['cls'] != 'qgis_vector_style': continue
                 layer_style_id = subelement['resource']['id']
+                children_name = subelement['resource']['display_name']
                 
             element=dict()
             element['layer_adapter']='tile'
             element['display_name']=layer['resource']['display_name']
+            if namesource = 'children': element['display_name'] = children_name
             element['layer_style_id']=layer_style_id
             element['layer_enabled']=True
             element['item_type']='layer'
