@@ -19,6 +19,53 @@ ngwapi = pyngw.Pyngw(ngw_url = 'https://sandbox.nextgis.com', login = 'administr
 print(ngwapi.get_childs_resources(0))
 ```
 
+
+# Function list
+
+## Search and helpers
+
+* get_resource
+* get_childs_resources(resource_group_id)
+* search_group_by_name
+* search_by_cls(group_id=0,cls='webmap') -> list
+* get_layers4webmap
+* download_vector_layer
+* get_TMS_url
+* get_childs_resources
+* get_styles_from_webmap_top
+
+## Edit
+
+* replace_qgis_style
+* webmap_reorder_layers_by_list
+* update_resource_payload(resource_id,payload,skip_errors=True)
+
+## Create
+
+* create_vector_feature
+* create_resource_group(parent_id=0, display_name='') #can generate random group name, useful for developing)
+* upload_vector_layer_ogr2ogr(filepath,group_id,display_name='',layer=None, geometry_type = None)
+* upload_vector_layer
+* create_postgis_connection
+* create_postgis_layer
+* create_wms_connection
+* create_wms_layer
+* create_wms
+* create_wfs
+* upload_raster_layer
+* upload_geojson
+* create_raster_style
+* upload_qgis_style(filepath,layer_id,display_name='')
+* create_webmap(group_id,childrens,display_name='') #create webmap from list of children, as return from ngw REST API
+* create_webmap_from_group(group_id,display_name='')
+* upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml 
+
+# Delete
+
+* delete_resource_by_id
+* truncate_group
+
+
 # Examples
 
 ## Get JSON description of resource
@@ -183,52 +230,6 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
             if geometry_type not in ('MULTIPOINT','MULTIPOLYGON'):
                  ngwapi.upload_vector_layer_ogr2ogr(filename,group_id,display_name=layername, layer = layername, geometry_type = geometry_type)
 ```
-
-
-# Function list
-
-## Search and helpers
-
-* get_resource
-* get_childs_resources(resource_group_id)
-* search_group_by_name
-* search_by_cls(group_id=0,cls='webmap') -> list
-* get_layers4webmap
-* download_vector_layer
-* get_TMS_url
-* get_childs_resources
-* get_styles_from_webmap_top
-
-## Edit
-
-* replace_qgis_style
-* webmap_reorder_layers_by_list
-* update_resource_payload(resource_id,payload,skip_errors=True)
-
-## Create
-
-* create_vector_feature
-* create_resource_group(parent_id=0, display_name='') #can generate random group name, useful for developing)
-* upload_vector_layer_ogr2ogr(filepath,group_id,display_name='',layer=None, geometry_type = None)
-* upload_vector_layer
-* create_postgis_connection
-* create_postgis_layer
-* create_wms_connection
-* create_wms_layer
-* create_wms
-* create_wfs
-* upload_raster_layer
-* upload_geojson
-* create_raster_style
-* upload_qgis_style
-* create_webmap(group_id,childrens,display_name='') #create webmap from list of children, as return from ngw REST API
-* create_webmap_from_group(group_id,display_name='')
-* upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml 
-
-# Delete
-
-* delete_resource_by_id
-* truncate_group
 
 
 ```python
