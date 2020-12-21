@@ -481,7 +481,7 @@ class Pyngw:
              "resource_id": element["layer_style_id"],
              "min_scale_denom":None,"max_scale_denom":None
             }
-            wms_layers.append(wms_layers)
+            wms_layers.append(wms_layer)
         
         self.create_wms(group_id = webmap['resource']['parent']['id'],layers = wms_layers, display_name = display_name)
             
