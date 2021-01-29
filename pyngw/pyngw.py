@@ -519,7 +519,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
 
    '''   
 
-    def get_layers4webmap(self, group_id,namesource=''):
+    def get_layers4webmap(self, group_id,namesource='',layer_adapter='tile'):
         """
         Return list with layers for create_webmap 
         """
@@ -535,7 +535,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
                 children_name = subelement['resource']['display_name']
                 
             element=dict()
-            element['layer_adapter']='tile'
+            element['layer_adapter'] = layer_adapter
             element['display_name']=layer['resource']['display_name']
             if namesource == 'children': element['display_name'] = children_name
             element['layer_style_id']=layer_style_id
@@ -544,8 +544,8 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             webmap_children_lines.append(element)
         return webmap_children_lines
         
-    def create_webmap_from_group(self,group_id,display_name=''):
-        childrens = self.get_layers4webmap(group_id)
+    def create_webmap_from_group(self,group_id,display_name='', layer_adapter = 'tile'):
+        childrens = self.get_layers4webmap(group_id, layer_adapter = layer_adapter)
         return self.create_webmap(group_id,childrens,display_name)
         
     def create_webmap(self,group_id,childrens,display_name=''):
