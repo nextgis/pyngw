@@ -529,11 +529,13 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             #call childrens second time for search vector_style
             if layer['resource']['cls'] != 'vector_layer': continue
             children_grand = self.get_childs_resources(layer['resource']['id'])
+            layer_style_id = None
+            children_name = None
             for subelement in children_grand:
                 if subelement['resource']['cls'] != 'qgis_vector_style': continue
                 layer_style_id = subelement['resource']['id']
                 children_name = subelement['resource']['display_name']
-                
+            if layer_style_id is None: continue    
             element=dict()
             element['layer_adapter'] = layer_adapter
             element['display_name']=layer['resource']['display_name']
