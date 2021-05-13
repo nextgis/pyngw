@@ -29,7 +29,7 @@ print(ngwapi.get_childs_resources(0))
 * search_group_by_name
 * search_by_cls(group_id=0,cls='webmap') -> list
 * get_layers4webmap
-* download_vector_layer
+* download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
 * get_TMS_url
 * get_childs_resources
 * get_styles_from_webmap_top
