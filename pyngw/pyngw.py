@@ -152,7 +152,7 @@ class Pyngw:
         else:
             nlt = ''
         
-        cmd = 'ogr2ogr -f NGW -skipfailures -progress -update -dim XY -doo "BATCH_SIZE={BATCH_SIZE}" {nlt}  -nln {nln} -doo "USERPWD={login}:{password}" -t_srs EPSG:3857 "NGW:{url}/resource/{group_id}" {filename}'
+        cmd = 'ogr2ogr -f NGW -skipfailures -progress -update -dim XY -doo "BATCH_SIZE={BATCH_SIZE}" {nlt}  -nln {nln} -doo "USERPWD={login}:{password}" -t_srs EPSG:3857 "NGW:{url}/resource/{group_id}" "{filename}"'
         cmd = cmd.format(url=self.ngw_url, display_name=display_name,login=self.login,password=self.password, 
         group_id=group_id,
         new_group_name=new_group_name,
