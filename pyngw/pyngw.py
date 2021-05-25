@@ -22,7 +22,7 @@ class Pyngw:
 
     '''
 
-    def __init__(self,ngw_url='https://sandbox.nextgis.com',login='administrator',password='demodemo'):
+    def __init__(self,ngw_url='https://sandbox.nextgis.com',login='administrator',password='demodemo',log_level='ERROR'):
         """[create api instance with stored login and passwords]
         
         Keyword Arguments:
@@ -34,6 +34,7 @@ class Pyngw:
         self.login=login
         self.password=password
         self.ngw_creds=(self.login,self.password)
+        self.log_level = log_level
         
         if self.ngw_url.endswith('/'): raise ValueError('ngw_url should not ended with "/" ')
 
@@ -613,6 +614,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             zipped_str=zipped_str)
         #https://sandbox.nextgis.com/api/resource/56/export?format=csv&srs=4326&zipped=true&fid=ngw_id&encoding=UTF-8
     
+        if self.log_level in ('DEBUG','INFO'): print('download vector layer '+url)
         response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
         with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
