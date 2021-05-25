@@ -587,7 +587,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         assert response.ok
         return response.json()['id']   
 
-    def download_vector_layer(self,path,layer_id,format='geojson',srs=4326,zipped=False):
+    def download_vector_layer(self,path,layer_id,format='GeoJSON',srs=4326,zipped=False):
         """Download vector layer
         
         Arguments:
@@ -599,7 +599,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             srs {int} -- [description] (default: {4326})
             zipped {bool} -- [description] (default: {False})
         """
-        assert format in ('geojson','shp','csv')
+        assert format in ('GeoJSON','GPKG','CSV')
         assert zipped in (False,True)
         if zipped == False:
             zipped_str = 'False'
