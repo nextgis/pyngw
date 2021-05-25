@@ -617,6 +617,26 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
+        
+    def download_qgis_style(self,path,resource_id):
+        """Download qgis vector style
+        
+        Arguments:
+            path {[str]} -- [Path to save file]
+            resource_id {[int]} -- [resource id]
+        
+        Keyword Arguments:
+
+        """
+
+        url = '{url}/api/resource/{layer_id}/qml'
+        url = url.format(url=self.ngw_url,
+            layer_id = layer_id,
+
+        response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
+        with open(path, 'wb') as out_file:
+            shutil.copyfileobj(response.raw, out_file)
+        del response
     
     def get_TMS_url(self,style_id):
         url = '{url}/api/component/render/tile?resource={style_id}'

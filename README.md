@@ -28,10 +28,11 @@ print(ngwapi.get_childs_resources(0))
 * get_childs_resources(resource_group_id)
 * search_group_by_name
 * search_by_cls(group_id=0,cls='webmap') -> list
-* get_layers4webmap
+* get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  # Return list with layers for create_webmap 
 * download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
+* download_qgis_style(path,style_id)
 * get_TMS_url
-* get_childs_resources
+* get_childs_resources(resource_group_id) # wraper for query ?parent=
 * get_styles_from_webmap_top
 
 ## Edit
@@ -52,12 +53,12 @@ print(ngwapi.get_childs_resources(0))
 * create_wms_layer
 * create_wms
 * create_wfs
-* upload_raster_layer
-* upload_geojson
 * create_raster_style
-* upload_qgis_style(filepath,layer_id,display_name='')
 * create_webmap(group_id,childrens,display_name='') #create webmap from list of children, as return from ngw REST API
 * create_webmap_from_group(group_id,display_name='')
+* upload_raster_layer
+* upload_geojson
+* upload_qgis_style(filepath,layer_id,display_name='')
 * upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml 
 
 # Delete
