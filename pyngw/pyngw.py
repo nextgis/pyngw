@@ -656,6 +656,14 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         request = requests.get(url, auth=self.ngw_creds)
         response = request.json()
         return response
+        
+    def get_feature_count(self,resource_id):
+        url = '{url}/api/resource/{resource_id}/feature_count'
+        url = url.format(url=self.ngw_url,
+            resource_id = resource_id)
+        request = requests.get(url, auth=self.ngw_creds)
+        response = request.json()
+        return response['total_count']
 
     def get_childs_resources(self,resource_group_id):
         """[wraper for GET query ?parent= , with use login-password from class]

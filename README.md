@@ -33,6 +33,7 @@ print(ngwapi.get_childs_resources(0))
 * download_qgis_style(path,style_id)
 * get_TMS_url
 * get_childs_resources(resource_group_id) # wraper for query ?parent=
+* get_feature_count(resource_id)
 * get_styles_from_webmap_top
 
 ## Edit
