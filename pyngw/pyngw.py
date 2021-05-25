@@ -629,9 +629,9 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
 
         """
 
-        url = '{url}/api/resource/{layer_id}/qml'
+        url = '{url}/api/resource/{resource_id}/qml'
         url = url.format(url=self.ngw_url,
-            layer_id = layer_id
+            resource_id = resource_id
             )
 
         response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
