@@ -603,9 +603,9 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         assert format in ('GeoJSON','GPKG','CSV')
         assert zipped in (False,True)
         if zipped == False:
-            zipped_str = 'False'
+            zipped_str = 'false'
         else:
-            zipped_str = 'True'
+            zipped_str = 'true'
         url = '{url}/api/resource/{layer_id}/export?format={format}&srs={srs}&zipped={zipped_str}&fid=ngw_id&encoding=UTF-8'
         url = url.format(url=self.ngw_url,
             layer_id = layer_id,
