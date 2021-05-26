@@ -10,7 +10,7 @@ See comments in code
 ### Usage ###
 
 ```
-pip install git+https://github.com/nextgis/pyngw.git
+pip install --upgrade --force-reinstall git+https://github.com/nextgis/pyngw.git
 ```
 ```
 import pyngw
