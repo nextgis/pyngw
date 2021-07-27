@@ -686,12 +686,12 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         
     def upload_qmls_byname(self,resource_group_id,qml_path):
         response = self.get_childs_resources(resource_group_id)
-        print(response)
+        
         for layer in response:
-            print(layer['resource']['id'],layer['resource']['display_name'] )
-            qml_filename = os.path.join(qml_path,layer['resource']['display_name']+'.qml')
-            
-            self.upload_qgis_style(filepath=qml_filename,layer_id=layer['resource']['id'],display_name='')
+            if (layer['resource']['cls']=='vector_layer'):
+                print('try upload qml for layer' + layer['resource']['id'],layer['resource']['display_name'] )
+                qml_filename = os.path.join(qml_path,layer['resource']['display_name']+'.qml')
+                self.upload_qgis_style(filepath=qml_filename,layer_id=layer['resource']['id'],display_name='')
     
     
     def _sort_layers_by_list(self,layers,orderlist):
