@@ -415,8 +415,6 @@ class Pyngw:
             display_name=os.path.splitext(filepath)[0]
 
         if self.log_level in ('DEBUG','INFO'): print("upload style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(layer_id) + '    '+display_name)
-        if skip_errors == True:
-            if os.path.isfile(
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
         payload=dict(
