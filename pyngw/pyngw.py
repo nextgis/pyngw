@@ -410,12 +410,13 @@ class Pyngw:
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         return response.json()['id']  
 
-    def upload_qgis_style(self,filepath,layer_id,display_name=''):
+    def upload_qgis_style(self,filepath,layer_id,display_name='', skip_errors = False):
         if display_name == '':
             display_name=os.path.splitext(filepath)[0]
 
-        print("upload style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(layer_id) + '    '+display_name)
-            
+        if self.log_level in ('DEBUG','INFO'): print("upload style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(layer_id) + '    '+display_name)
+        if skip_errors == True:
+            if os.path.isfile(
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
         payload=dict(
@@ -689,9 +690,11 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
         
         for layer in response:
             if (layer['resource']['cls']=='vector_layer'):
-                #print('try upload qml for layer', layer['resource']['id'],layer['resource']['display_name'] )
                 qml_filename = os.path.join(qml_path,layer['resource']['display_name']+'.qml')
-                self.upload_qgis_style(filepath=qml_filename,layer_id=layer['resource']['id'],display_name='')
+                if os.path.isfile(qml_filename):
+                    self.upload_qgis_style(filepath=qml_filename,layer_id=layer['resource']['id'],display_name='')
+                else:
+                    print('not found file '+qml_filename+' continue to next layer')
     
     
     def _sort_layers_by_list(self,layers,orderlist):
