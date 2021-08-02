@@ -163,7 +163,7 @@ class Pyngw:
         nln = layer)
         #cmd = cmd + ' ' + '
         if layer is not None: cmd = cmd +' ' + layer
-        print(cmd)
+        if self.log_level in ('DEBUG','INFO'): print(cmd)
         
         os.system(cmd)    
     
