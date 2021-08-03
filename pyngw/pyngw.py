@@ -134,7 +134,7 @@ class Pyngw:
                    ngwapi.truncate_group(serch_result)
                    return serch_result
 
-    def _simple_create_resource_group(self, parent_id=0, display_name='')
+    def _simple_create_resource_group(self, parent_id=0, display_name=''):
         """
         just create resource group.
         This method indented to call from other methods, witch should preform fail-safe checks for group existing.
