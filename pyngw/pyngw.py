@@ -105,18 +105,42 @@ class Pyngw:
         resources = self.get_childs_resources(group_id)
         for resource in resources: self.delete_resource_by_id(resource['resource']['id'])
 
-    def create_resource_group(self, parent_id=0, display_name=''):
-        """[Create new resource group. Checks not performing]
+    def create_resource_group(self, parent_id=0, display_name='', overwrite=None):
+        """[Create new resource group.]
         
         Keyword Arguments:
             parent_id {int} -- [id of resource group, where this resource will created] (default: {0})
             display_name {str} -- [display name of new resource] (default: {''})
+            overwrite {str} None -- if group exists, stop at assert
+            overwrite {str} truncate -- if group exists, delete all contents, and return group_id
         
         Returns:
             [int] -- [new resource group id]
         """
         
         if display_name == '': display_name = self.generate_name()
+        #check
+        if overwrite is None:
+            serch_result = self.search_group_by_name(name=display_name,parent_id)
+            if serch_result is not None:
+                raise ValueError('Already exists group '+display_name)
+            else:
+               return self._simple_create_resource_group(parent_id, display_name)
+         elif overwrite == 'truncate':
+               serch_result = self.search_group_by_name(name=display_name,parent_id)
+               if serch_result is None: 
+                    return self._simple_create_resource_group(parent_id, display_name)
+               else:
+                   ngwapi.truncate_group(serch_result)
+                   return serch_result
+
+    def _simple_create_resource_group(self, parent_id=0, display_name='')
+        """
+        just create resource group.
+        This method indented to call from other methods, witch should preform fail-safe checks for group existing.
+        
+        """
+        if display_name == '': display_name = self.generate_name()                              
         payload = dict()
 
         payload['resource'] = {}
@@ -124,7 +148,6 @@ class Pyngw:
         payload['resource']['parent']=dict(id=parent_id)
         payload['resource']['display_name'] = display_name
 
-        
         url=self.ngw_url+'/api/resource/'
         request = requests.post(url, json = payload, auth=self.ngw_creds)
 
@@ -133,7 +156,7 @@ class Pyngw:
         response = request.json()
         group_id = response['id']
         return int(group_id)
-
+                                      
     def upload_vector_layer_ogr2ogr(self,filepath,group_id,display_name='',layer=None, geometry_type = None, batch_size=200):
         import os
         
