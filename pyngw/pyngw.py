@@ -126,7 +126,7 @@ class Pyngw:
                 raise ValueError('Already exists group '+display_name)
             else:
                return self._simple_create_resource_group(parent_id, display_name)
-         elif overwrite == 'truncate':
+        elif overwrite == 'truncate':
                serch_result = self.search_group_by_name(name=display_name,parent_id)
                if serch_result is None: 
                     return self._simple_create_resource_group(parent_id, display_name)
