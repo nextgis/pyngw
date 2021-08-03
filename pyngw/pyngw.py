@@ -121,7 +121,7 @@ class Pyngw:
         if display_name == '': display_name = self.generate_name()
         #check
         if overwrite is None:
-            serch_result = self.search_group_by_name(name=display_name,parent_id)
+            serch_result = self.search_group_by_name(name=display_name,parent_id=parent_id)
             if serch_result is not None:
                 raise ValueError('Already exists group '+display_name)
             else:
@@ -131,7 +131,7 @@ class Pyngw:
                if serch_result is None: 
                     return self._simple_create_resource_group(parent_id, display_name)
                else:
-                   ngwapi.truncate_group(serch_result)
+                   self.truncate_group(serch_result)
                    return serch_result
 
     def _simple_create_resource_group(self, parent_id=0, display_name=''):
