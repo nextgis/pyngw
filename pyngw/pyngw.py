@@ -162,15 +162,7 @@ class Pyngw:
         
         if display_name == '': display_name = self.generate_name()
         new_group_name = self.generate_name()
-        cmd = 'ogr2ogr -nlt POINT   -dsco "USERPWD=administrator:demodemo" -t_srs EPSG:4326 -f NGW "NGW:https://sandbox.nextgis.com/resource/0/Название на русском языке" post_office.geojson '
-        cmd = ["ogr2ogr",
-        '-skipfailures',
-        '-dsco "USERPWD='+self.login+':'+self.password+'"',
-        '-t_srs EPSG:4326', 
-        '-f NGW',
-        '"NGW:{url}/resource/0/{display_name}"'.format(url=self.ngw_url, display_name=display_name),
-        filepath,
-        ]
+
         if geometry_type is not None:
             nlt = '-nlt '+geometry_type
         else:
