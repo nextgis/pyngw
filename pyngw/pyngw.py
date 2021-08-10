@@ -6,9 +6,11 @@ from requests.auth import HTTPBasicAuth
 import os
 import datetime
 import shutil
+from tusclient.client import TusClient  # requirement in setup.py
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
+
 
 
 class Pyngw:
@@ -180,8 +182,41 @@ class Pyngw:
         if layer is not None: cmd = cmd +' ' + layer
         if self.log_level in ('DEBUG','INFO'): print(cmd)
         
-        os.system(cmd)    
-    
+        os.system(cmd) 
+        
+    def upload_vector_layer_tus(self,filepath,group_id, display_name=''):
+        """[Create vector layer from file]
+        
+        Arguments:
+            filepath {str} -- [path to file (geojson, zip with shp)]
+            group_id {str} -- [id of resource group, where this resource will created]
+        
+        Keyword Arguments:
+            display_name {str} -- [display name of new resource] (default: {''})
+        
+        Returns:
+            [int] -- [id of new layer]
+        """
+        if display_name == '': display_name = self.generate_name()
+        tus_client = TusClient(self.ngw_url + '/api/component/file_upload/upload')
+        
+        metadata = dict(name=name)
+        uploader = tus_client.uploader(filepath, metadata=metadata)
+        uploader.upload()
+        furl = uploader.url
+        
+        file_upload_result = requests.get(furl , auth=self.ngw_creds )
+
+        payload=dict(
+            resource=dict(cls='vector_layer', parent=dict(id=group_id), display_name=display_name),
+        
+        vector_layer=dict(  source=file_upload_result.json(),
+                            srs=dict(id=3857))
+        )
+
+        vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        return vector_layer.json()['id']        
+        
     def upload_vector_layer(self,filepath,group_id, display_name=''):
         """[Create vector layer from file]
         
