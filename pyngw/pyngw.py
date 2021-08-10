@@ -200,7 +200,7 @@ class Pyngw:
         if display_name == '': display_name = self.generate_name()
         tus_client = TusClient(self.ngw_url + '/api/component/file_upload/upload')
         
-        metadata = dict(name=name)
+        metadata = dict(name=display_name)
         uploader = tus_client.uploader(filepath, metadata=metadata)
         uploader.upload()
         furl = uploader.url
