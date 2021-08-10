@@ -6,6 +6,8 @@ from requests.auth import HTTPBasicAuth
 import os
 import datetime
 import shutil
+import logging
+
 from tusclient.client import TusClient  # requirement in setup.py
 
 import pprint
@@ -38,6 +40,9 @@ class Pyngw:
         self.ngw_creds=(self.login,self.password)
         self.log_level = log_level
         
+        if log_level == 'ERROR': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.ERROR)
+        if log_level == 'DEBUG': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+        if log_level == 'INFO': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)       
         if self.ngw_url.endswith('/'): raise ValueError('ngw_url should not ended with "/" ')
 
     def search_group_by_name(self,name,group_id=0):
@@ -198,7 +203,8 @@ class Pyngw:
             [int] -- [id of new layer]
         """
         if display_name == '': display_name = self.generate_name()
-        tus_client = TusClient(self.ngw_url + '/api/component/file_upload/upload')
+        url = self.ngw_url + '/api/component/file_upload/'
+        tus_client = TusClient(url)
         
         metadata = dict(name=display_name)
         uploader = tus_client.uploader(filepath, metadata=metadata)

@@ -46,6 +46,7 @@ print(ngwapi.get_childs_resources(0))
 
 * create_vector_feature
 * create_resource_group(parent_id=0, display_name='') #can generate random group name, useful for developing)
+* upload_vector_layer_tus(parent_id=0, display_name='') #Using tus.io protocol
 * upload_vector_layer_ogr2ogr(filepath,group_id,display_name='',layer=None, geometry_type = None)
 * upload_vector_layer
 * create_postgis_connection
