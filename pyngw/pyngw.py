@@ -210,9 +210,10 @@ class Pyngw:
         uploader = tus_client.uploader(filepath, metadata=metadata)
         uploader.upload()
         furl = uploader.url
-        
+        logging.debug('uploader_url='+furl)
         file_upload_result = requests.get(furl , auth=self.ngw_creds )
-
+	
+        logging.debug('file_upload_result = '+str(file_upload_result.json()))
         payload=dict(
             resource=dict(cls='vector_layer', parent=dict(id=group_id), display_name=display_name),
         
