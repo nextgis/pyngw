@@ -693,8 +693,7 @@ curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING
             )
 
         response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
-        with open(path, 'wb') as out_file:
-            shutil.copyfileobj(response.raw, out_file)
+	open(path, 'wb').write(response.content)
         del response
     
     def get_TMS_url(self,style_id):
