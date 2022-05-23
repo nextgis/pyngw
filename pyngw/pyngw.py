@@ -185,7 +185,7 @@ class Pyngw:
         nln = layer)
         #cmd = cmd + ' ' + '
         if layer is not None: cmd = cmd +' ' + layer
-        if self.log_level in ('DEBUG','INFO'): print(cmd)
+        if self.log_level in ('DEBUG','INFO'): self.logging.debug(cmd)
 
         os.system(cmd)
 
@@ -563,15 +563,38 @@ class Pyngw:
 
         return response.json()['id']
         '''
-url='https://sandbox.nextgis.com'
-login='administrator'
-password='demodemo'
+curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"new"}, "vector_layer":{"geometry_type":"LINESTRING","srs":{"id":3857}, "fields":[{"keyname":"fieldname1","datatype":"STRING","display_name":"fld1"}]}   }' -u administrator:demodemo -X POST https://sandbox.nextgis.com/api/resource/
 
-curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING (5028857 6471598, 5028969 6471598)"}' -u $login:$password -X POST $url/api/resource/417
-
-curl -d '{   "fields": {   "name": "object created in POST"},"geom": "LINESTRING (5028857 6471598, 5028969 6471598)"}' -u administrator:demodemo -X POST https://sandbox.nextgis.com/api/resource/420/feature/
+curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"new"}, "vector_layer":{"geometry_type":"LINESTRING","srs":{"id":3857}, "fields":[{"datatype":"STRING","display_name":"fld1"}]}   }' -u administrator:demodemo -X POST https://sandbox.nextgis.com/api/resource/
 
    '''
+
+    def create_vector_layer(self,group_id,display_name,geometry_type,fields):
+        if display_name == '': display_name = 'layer ' + self.generate_name()
+        assert 'LINESTRING' in geometry_type or 'POINT' in geometry_type or 'POLYGON' in geometry_type
+        assert isinstance(fields, list)
+        assert isinstance(fields[0], dict)
+        assert fields[0].get('display_name',None) is not None
+        assert isinstance(group_id, int)
+
+        payload = {
+        "resource": {
+            "cls": "vector_layer",
+            "parent": { "id": group_id},
+            "display_name": display_name,
+        },
+
+        "vector_layer": {
+            "geometry_type": geometry_type,
+            "srs":{"id":3857},
+            "fields":fields,
+        }
+        }
+
+
+        response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        assert response.ok
+        return response.json()['id']
 
     def get_layers4webmap(self, group_id,namesource='',layer_adapter='tile'):
         """
