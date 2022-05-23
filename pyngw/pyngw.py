@@ -45,6 +45,8 @@ class Pyngw:
         if log_level == 'INFO': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
         if self.ngw_url.endswith('/'): raise ValueError('ngw_url should not ended with "/" ')
 
+        self.logger = logging.getLogger(__name__)
+
     def search_group_by_name(self,name,group_id=0):
         GROUPNAME = name
 
@@ -185,9 +187,14 @@ class Pyngw:
         nln = layer)
         #cmd = cmd + ' ' + '
         if layer is not None: cmd = cmd +' ' + layer
-        if self.log_level in ('DEBUG','INFO'): self.logging.debug(cmd)
+        self.logger.debug(cmd)
 
         os.system(cmd)
+        resources = self.get_childs_resources(group_id)
+        for res in resources:
+            if res['resource']['cls'] == 'vector_layer' and res['resource']['display_name'] == display_name:
+                return res['resource']['id']
+        return None
 
     def upload_vector_layer_tus(self,filepath,group_id, display_name=''):
         """[Create vector layer from file]
@@ -210,10 +217,10 @@ class Pyngw:
         uploader = tus_client.uploader(filepath, metadata=metadata)
         uploader.upload()
         furl = uploader.url
-        logging.debug('uploader_url='+furl)
+        self.logger.debug('uploader_url='+furl)
         file_upload_result = requests.get(furl , auth=self.ngw_creds )
 
-        logging.debug('file_upload_result = '+str(file_upload_result.json()))
+        self.logger.debug('file_upload_result = '+str(file_upload_result.json()))
         payload=dict(
             resource=dict(cls='vector_layer', parent=dict(id=group_id), display_name=display_name),
 
@@ -471,7 +478,7 @@ class Pyngw:
         if display_name == '':
             display_name=os.path.splitext(filepath)[0]
 
-        if self.log_level in ('DEBUG','INFO'): print("upload style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(layer_id) + '    '+display_name)
+        self.logger.debug("upload style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(layer_id) + '    '+display_name)
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
         payload=dict(
@@ -484,7 +491,7 @@ class Pyngw:
 
     def replace_qgis_style(self,filepath,style_id):
 
-        print("replace style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(style_id) )
+        self.logger.debug("replace style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(style_id) )
 
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
@@ -690,7 +697,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             zipped_str=zipped_str)
         #https://sandbox.nextgis.com/api/resource/56/export?format=csv&srs=4326&zipped=true&fid=ngw_id&encoding=UTF-8
 
-        if self.log_level in ('DEBUG','INFO'): print('download vector layer '+url)
+        self.logger.debug('download vector layer '+url)
         response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
         with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
