@@ -3,7 +3,7 @@
 Python client library wraper for NextGIS Web REST API operations.
 
 
-python wrapper for NextGIS Web REST API. 
+python wrapper for NextGIS Web REST API.
 See comments in code
 
 
@@ -28,7 +28,7 @@ print(ngwapi.get_childs_resources(0))
 * get_childs_resources(resource_group_id)
 * search_group_by_name
 * search_by_cls(group_id=0,cls='webmap') -> list
-* get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  # Return list with layers for create_webmap 
+* get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  # Return list with layers for create_webmap
 * download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
 * download_qgis_style(path,style_id)
 * get_TMS_url
@@ -46,6 +46,7 @@ print(ngwapi.get_childs_resources(0))
 
 * create_vector_feature
 * create_resource_group(parent_id=0, display_name='') #can generate random group name, useful for developing)
+* create_vector_layer(group_id,display_name,geometry_type,fields)
 * upload_vector_layer_tus(parent_id=0, display_name='') #Using tus.io protocol
 * upload_vector_layer_ogr2ogr(filepath,group_id,display_name='',layer=None, geometry_type = None)
 * upload_vector_layer
@@ -61,7 +62,7 @@ print(ngwapi.get_childs_resources(0))
 * upload_raster_layer
 * upload_geojson
 * upload_qgis_style(filepath,layer_id,display_name='')
-* upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml 
+* upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml
 
 # Delete
 
@@ -123,7 +124,7 @@ for layer in layers:
         if sub['resource']['cls'] == 'qgis_vector_style':
             print(sub['resource']['display_name'])
             ngwapi.update_resource_payload(sub['resource']['id'],change_payload)
-            
+
 ```
 
 ## Update vector layer parameters for all layers in webmap
@@ -141,7 +142,7 @@ for layer in layers:
 
         style_ids = ngwapi.get_styles_from_webmap_top(webmap_id)
         for style_id in style_ids:
-            print('update '+str(style_id)) 
+            print('update '+str(style_id))
             ngwapi.update_resource_payload(style_id,payload)
 
 ```
@@ -186,7 +187,7 @@ Upload vector layer in any ogr compatible format using ogr2ogr. Wrap for long og
 ```
 
 ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
-                                   group_id=0, 
+                                   group_id=0,
                                    display_name = '',
                                    layer = 'boundary',
                                    geometry_type = 'MULTIPOLYGON')
@@ -209,15 +210,15 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
         for layer_index in range(file.GetLayerCount()):
             layer_obj = file.GetLayerByIndex(layer_index)
             layer_name = layer_obj.GetName()
-            
+
             #get geometry_type for frist feature
-            for feature in layer_obj: 
+            for feature in layer_obj:
                 geometry_type = feature.GetGeometryRef().GetGeometryName()
                 break
 
             layerinfo = (layer_name, geometry_type)
             layers.append(layerinfo)
-            
+
         del file
         del driver
 
@@ -229,9 +230,19 @@ ngwapi.upload_vector_layer_ogr2ogr(filepath = 'data.gpkg',
             print()
             print()
             print(layername,geometry_type)
-            
+
             if geometry_type not in ('MULTIPOINT','MULTIPOLYGON'):
                  ngwapi.upload_vector_layer_ogr2ogr(filename,group_id,display_name=layername, layer = layername, geometry_type = geometry_type)
+```
+
+## Create empty vector layers
+
+```
+fields=[{"datatype":"STRING","display_name":"fld1","keyname":"fieldname1"}]
+new_id = ngwapi.create_vector_layer(group_id=0,display_name = 'layer ' + ngwapi.generate_name(),geometry_type='LINESTRING',fields=fields)
+
+print(new_id)
+
 ```
 
 
