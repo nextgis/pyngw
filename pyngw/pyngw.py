@@ -70,6 +70,16 @@ class Pyngw:
             found_ids.append(element['layer_style_id'])
         return found_ids
 
+    def get_feature_count(self,resource_id):
+        url=self.ngw_url+'/api/resource/'+str(resource_id)+'/feature_count'
+        request = requests.get(url, auth=self.ngw_creds)
+        response = request.json()
+        feature_count = response.get('total_count',None)
+        if feature_count is not None:
+            return int(feature_count)
+        else:
+            return None
+
     def search_by_cls(self,group_id=0,cls='webmap'):
 
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
