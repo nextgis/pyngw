@@ -187,7 +187,7 @@ class Pyngw:
         else:
             nlt = ''
 
-        cmd = 'ogr2ogr -f NGW -skipfailures -progress -update -dim XY -doo "BATCH_SIZE={BATCH_SIZE}" {nlt}  -nln {nln} -doo "USERPWD={login}:{password}" -t_srs EPSG:3857 "NGW:{url}/resource/{group_id}" "{filename}"'
+        cmd = 'ogr2ogr -f NGW -skipfailures -progress -update -doo "BATCH_SIZE={BATCH_SIZE}" {nlt}  -nln {nln} -doo "USERPWD={login}:{password}" -t_srs EPSG:3857 "NGW:{url}/resource/{group_id}" "{filename}"'
         cmd = cmd.format(url=self.ngw_url, display_name=display_name,login=self.login,password=self.password,
         group_id=group_id,
         new_group_name=new_group_name,
@@ -750,14 +750,6 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         request = requests.get(url, auth=self.ngw_creds)
         response = request.json()
         return response
-
-    def get_feature_count(self,resource_id):
-        url = '{url}/api/resource/{resource_id}/feature_count'
-        url = url.format(url=self.ngw_url,
-            resource_id = resource_id)
-        request = requests.get(url, auth=self.ngw_creds)
-        response = request.json()
-        return response['total_count']
 
     def get_childs_resources(self,resource_group_id):
         """[wraper for GET query ?parent= , with use login-password from class]
