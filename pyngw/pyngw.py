@@ -43,7 +43,8 @@ class Pyngw:
         if log_level == 'ERROR': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.ERROR)
         if log_level == 'DEBUG': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
         if log_level == 'INFO': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-        if self.ngw_url.endswith('/'): raise ValueError('ngw_url should not ended with "/" ')
+        if self.ngw_url.endswith('/'): raise ValueError('url should not ended with "/" ')
+        if not self.ngw_url.lower().startswith('https://'): raise ValueError('url should use HTTPS ')
 
         self.logger = logging.getLogger(__name__)
 
