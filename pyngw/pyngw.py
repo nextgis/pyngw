@@ -815,4 +815,19 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
 
         assert response.ok
 
-        return
+        return True
+
+    def webmap_set_extent_by_layer(self,webmap_id,layer_id):
+        assert self.get_resource(webmap_id)['resource']['cls'] == 'webmap'
+
+        webmap_data = self.get_resource(webmap_id)
+        url = '{url}/api/resource/{resource_id}/extent'
+        url = url.format(url=self.ngw_url,
+            resource_id = layer_id)
+        request = requests.get(url, auth=self.ngw_creds)
+        response = request.json()
+        extent = response['extent']
+
+        payload={'webmap':{"extent_left":extent['minLon'],"extent_right":extent['maxLon'],"extent_bottom":extent['minLat'],"extent_top":extent['maxLat']}}
+        self.update_resource_payload(webmap_id,payload)
+        return True
