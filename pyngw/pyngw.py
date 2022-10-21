@@ -14,7 +14,6 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 
-
 class Pyngw:
 
     '''
@@ -54,7 +53,6 @@ class Pyngw:
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
         request = requests.get(url, auth=self.ngw_creds)
         response = request.json()
-
 
         for element in response:
             if element['resource']['cls']=='resource_group' and element['resource']['display_name']==GROUPNAME:
@@ -271,8 +269,6 @@ class Pyngw:
         vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         return vector_layer.json()['id']
 
-
-
     def create_postgis_connection(self,group_id=0, display_name='',hostname='localhost',port=54321,database='gis',username='',password=''):
         """[Create PostGIS connection in ngw]
 
@@ -350,13 +346,10 @@ class Pyngw:
         }
         }
 
-
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
-
         assert response.status_code == 201
         postgis_layer = response.json()['id']
         return postgis_layer
-
 
     def create_wms_connection(self,group_id=0, display_name='',url='',username=None,password=None):
         """[Create WMS connection in ngw]
@@ -418,10 +411,7 @@ class Pyngw:
                 },
             }
         }
-
-
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
-
         assert response.status_code == 201
         wms_layer = response.json()['id']
         return wms_layer
@@ -608,8 +598,6 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             "fields":fields,
         }
         }
-
-
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         assert response.ok
         return response.json()['id']
@@ -779,7 +767,6 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
                     self.upload_qgis_style(filepath=qml_filename,layer_id=layer['resource']['id'],display_name='')
                 else:
                     print('not found file '+qml_filename+' continue to next layer')
-
 
     def _sort_layers_by_list(self,layers,orderlist):
         """
