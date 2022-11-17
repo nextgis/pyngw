@@ -7,6 +7,7 @@ import os
 import datetime
 import shutil
 import logging
+import time
 
 from tusclient.client import TusClient  # requirement in setup.py
 
@@ -601,6 +602,29 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         assert response.ok
         return response.json()['id']
+    def replace_vector_layer(self,old_display_name,group_id,filepath) -> int:
+        #upload new layer, move vector styles from old to new layer, delete old layer, rename new layer to old
+        
+        layer_id = None
+        resources = self.get_childs_resources(group_id)
+        for resource in resources:
+            if resource['resource']['display_name'] == old_display_name and resource['resource']['cls'] == 'vector_layer':
+                layer_id = resource['resource']['id']
+        assert layer_id is not None
+        
+        timestamp = str(time.time())
+        old_layer_data = self.get_resource(layer_id)
+        new_layer_name = old_layer_data['resource']['display_name']+timestamp
+        new_layer_id = self.upload_vector_layer_tus(filepath=filepath,group_id=old_layer_data['resource']['parent']['id'],display_name = new_layer_name)
+        childs = self.get_childs_resources(layer_id)
+        for layer_child in childs:
+            payload = {'resource':{'parent':{'id':new_layer_id}}}
+            self.update_resource_payload(layer_child['resource']['id'],payload=payload,skip_errors=True)
+        self.delete_resource_by_id(layer_id)
+        payload = {'resource':{'display_name':old_layer_data['resource']['display_name']}}
+        self.update_resource_payload(new_layer_id,payload=payload,skip_errors=True)
+        return new_layer_id
+        
 
     def get_layers4webmap(self, group_id,namesource='',layer_adapter='tile'):
         """
