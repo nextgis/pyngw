@@ -42,6 +42,7 @@ print(ngwapi.get_childs_resources(0))
 * webmap_reorder_layers_by_list
 * update_resource_payload(resource_id,payload,skip_errors=True)
 * webmap_set_extent_by_layer(webmap_id,layer_id) -> bool
+* replace_vector_layer(old_display_name,group_id,filepath) -> int
 
 ## Create
 
