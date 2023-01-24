@@ -62,6 +62,7 @@ print(ngwapi.get_childs_resources(0))
 * create_webmap(group_id,childrens,display_name='') #create webmap from list of children, as return from ngw REST API
 * create_webmap_from_group(group_id,display_name='')
 * upload_raster_layer(filepath, group_id, display_name = '') -> int
+    Note: this library not implemented create raster layer with nextgisweb lunkwill, see https://github.com/nextgis/ngw_external_api_python
 * upload_qgis_style(filepath,layer_id,display_name='')
 * upload_qmls_byname(resource_group_id,qml_path) #for each layer in group, upload qml file with exact name +.qml
 
