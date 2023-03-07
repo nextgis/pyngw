@@ -124,6 +124,15 @@ class Pyngw:
         resources = self.get_childs_resources(group_id)
         for resource in resources: self.delete_resource_by_id(resource['resource']['id'])
 
+    def truncate_layer(self,layer_id):
+        """[Delete all features in layer]
+        
+        """
+        # https://docs.nextgis.ru/docs_ngweb_dev/doc/developer/change.html#delete-all-features
+
+        url=self.ngw_url+'/api/resource/'+str(layer_id)+'/feature/'
+        request = requests.delete(url, auth=self.ngw_creds)
+
     def create_resource_group(self, parent_id=0, display_name='', overwrite=None):
         """[Create new resource group.]
 
