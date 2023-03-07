@@ -68,13 +68,14 @@ print(ngwapi.get_childs_resources(0))
 
 # Delete
 
-* delete_resource_by_id
-* truncate_group
+* delete_resource_by_id(resource_id)
+* truncate_group(group_id)
+* truncate_layer(layer_id)
 
 
 # Examples
 
-## Get JSON description of resource
+## Get python dict description of resource
 
 ```
 ngwapi.get_resource(resource_id)
