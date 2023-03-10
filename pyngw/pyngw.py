@@ -253,7 +253,7 @@ class Pyngw:
     def upload_vector_layer(self,filepath,group_id, display_name='',
             cast_is_multi=True,
             cast_has_z=False,
-            skip_other_geometry_types=True
+            skip_other_geometry_types=True,
             fix_errors='LOSSY',
             skip_errors=True,
             fid_source='AUTO',
