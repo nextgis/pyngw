@@ -284,13 +284,13 @@ class Pyngw:
         vector_layer=dict(  source=file_upload_result.json(),
                             srs=dict(id=3857),
                                  
-     cast_is_multi: cast_is_multi,
-     cast_has_z: cast_has_z,
-     skip_other_geometry_types: skip_other_geometry_types,
-     fix_errors: fix_errors,
-     skip_errors: skip_errors,
-     fid_source: fid_source,
-     fid_field: fid_field
+     cast_is_multi= cast_is_multi,
+     cast_has_z= cast_has_z,
+     skip_other_geometry_types= skip_other_geometry_types,
+     fix_errors= fix_errors,
+     skip_errors= skip_errors,
+     fid_source= fid_source,
+     fid_field= fid_field
      )
         )
 
