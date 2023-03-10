@@ -250,12 +250,20 @@ class Pyngw:
         vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         return vector_layer.json()['id']
 
-    def upload_vector_layer(self,filepath,group_id, display_name=''):
+    def upload_vector_layer(self,filepath,group_id, display_name='',
+            cast_is_multi=True,
+            cast_has_z=False,
+            skip_other_geometry_types=True
+            fix_errors='LOSSY',
+            skip_errors=True,
+            fid_source='AUTO',
+            fid_field='ngw_id'):
         """[Create vector layer from file]
 
         Arguments:
             filepath {str} -- [path to file (geojson, zip with shp)]
             group_id {str} -- [id of resource group, where this resource will created]
+            next: see https://docs.nextgis.ru/docs_ngweb_dev/doc/developer/create.html#create-vector-layer
 
         Keyword Arguments:
             display_name {str} -- [display name of new resource] (default: {''})
@@ -270,10 +278,20 @@ class Pyngw:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
 
         payload=dict(
-            resource=dict(cls='vector_layer', parent=dict(id=group_id), display_name=display_name),
+            resource=dict(cls='vector_layer', parent=dict(id=group_id), display_name=display_name, 
+            ),
 
         vector_layer=dict(  source=file_upload_result.json(),
-                            srs=dict(id=3857))
+                            srs=dict(id=3857),
+                                 "cast_geometry_type": "POLYGON",
+     "cast_is_multi": cast_is_multi,
+     "cast_has_z": cast_has_z,
+     "skip_other_geometry_types": skip_other_geometry_types,
+     "fix_errors": fix_errors,
+     "skip_errors": skip_errors,
+     "fid_source": fid_source,
+     "fid_field": fid_field
+     )
         )
 
         vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
