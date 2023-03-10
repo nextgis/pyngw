@@ -283,7 +283,7 @@ class Pyngw:
 
         vector_layer=dict(  source=file_upload_result.json(),
                             srs=dict(id=3857),
-                                 "cast_geometry_type": "POLYGON",
+                                 
      "cast_is_multi": cast_is_multi,
      "cast_has_z": cast_has_z,
      "skip_other_geometry_types": skip_other_geometry_types,
