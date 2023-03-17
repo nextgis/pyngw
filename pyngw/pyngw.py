@@ -48,13 +48,7 @@ class Pyngw:
 
         self.logger = logging.getLogger(__name__)
 
-    def import_gdal_bindings(self)->bool:
-        try:
-            from osgeo import ogr, gdal
-        except ImportError or ModuleNotFoundError as e:
-            raise ModuleNotFoundError('This method require Python GDAL bindings') from e
 
-        return True
 
     def search_group_by_name(self,name,group_id=0)->int:
         GROUPNAME = name
@@ -879,7 +873,10 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         return True
 
     def create_vector_features_ogr(self,layer_id,filepath, debug=False, page_size=100)->bool:
-        self.import_gdal_bindings()
+        try:
+            from osgeo import ogr, gdal
+        except ImportError or ModuleNotFoundError as e:
+            raise ModuleNotFoundError('This method require Python GDAL bindings') from e
 
         gdal.UseExceptions()
         ds = gdal.OpenEx(filepath, gdal.OF_VECTOR)
