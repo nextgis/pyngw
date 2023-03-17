@@ -48,7 +48,15 @@ class Pyngw:
 
         self.logger = logging.getLogger(__name__)
 
-    def search_group_by_name(self,name,group_id=0):
+    def import_gdal_bindings(self)->bool:
+        try:
+            from osgeo import ogr, gdal
+        except ImportError or ModuleNotFoundError as e:
+            raise ModuleNotFoundError('This method require Python GDAL bindings') from e
+
+        return True
+
+    def search_group_by_name(self,name,group_id=0)->int:
         GROUPNAME = name
 
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
@@ -593,7 +601,7 @@ class Pyngw:
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         return response.json()['id']
 
-    def create_vector_feature(self,layer_id,geom,fields):
+    def create_vector_feature(self,layer_id,geom,fields)->int:
         payload = {"geom": geom, "fields": fields}
         response = requests.post(self.ngw_url+'/api/resource/'+str(layer_id)+'/feature/', json=payload, auth=self.ngw_creds )
 
@@ -868,4 +876,37 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
 
         payload={'webmap':{"extent_left":extent['minLon'],"extent_right":extent['maxLon'],"extent_bottom":extent['minLat'],"extent_top":extent['maxLat']}}
         self.update_resource_payload(webmap_id,payload)
+        return True
+
+    def create_vector_features_ogr(self,layer_id,filepath, debug=False, page_size=100)->bool:
+        self.import_gdal_bindings()
+
+        gdal.UseExceptions()
+        ds = gdal.OpenEx(filepath, gdal.OF_VECTOR)
+        assert ds is not None
+        layer = ds.GetLayer()
+        assert layer is not None
+
+        url = 'NGW:' + self.ngw_url + '/resource/' + str(layer_id)
+        if debug:
+            gdal.SetConfigOption('CPL_DEBUG', 'ON')
+            gdal.SetConfigOption('CPL_LOG_ERRORS', 'ON')
+        assert isinstance(page_size, int)
+        ds_ngw = gdal.OpenEx(url, gdal.OF_UPDATE,open_options=['USERPWD='+self.login+':'+self.password,"PAGE_SIZE="+str(page_size)]) #
+        assert ds_ngw is not None
+        ngw_layer = ds_ngw.GetLayer()
+        src_layer_def = layer.GetLayerDefn()
+        out_layer_def = ngw_layer.GetLayerDefn()
+
+        for feature in layer:
+            out_feature = ogr.Feature(out_layer_def)
+            for i in range(0, src_layer_def.GetFieldCount()):
+                out_feature.SetField(out_layer_def.GetFieldDefn(i).GetNameRef(), feature.GetField(i))
+            out_feature.SetGeometry(feature.GetGeometryRef())
+
+            ret = ngw_layer.CreateFeature(out_feature)
+            out_feature = None
+        ds = None
+        ds_ngw = None
+
         return True
