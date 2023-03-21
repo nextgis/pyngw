@@ -46,7 +46,8 @@ print(ngwapi.get_childs_resources(0))
 
 ## Create
 
-* create_vector_feature
+* create_vector_feature(layer_id,geom,fields)->int
+* create_vector_features_ogr(layer_id, filepath, page_size=100)->bool # Copy features from vector file to ngw. Require GDAL Python bingings. 
 * create_resource_group(parent_id=0, display_name='') #can generate random group name, useful for developing)
 * create_vector_layer(group_id,display_name,geometry_type,fields)
 * upload_vector_layer_tus(parent_id=0, display_name='') #Using tus.io protocol
