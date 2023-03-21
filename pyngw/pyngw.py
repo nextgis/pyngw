@@ -40,8 +40,8 @@ class Pyngw:
         self.ngw_creds=(self.login,self.password)
         self.log_level = log_level
 
-        if log_level == 'ERROR': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.ERROR)
         if log_level == 'DEBUG': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+        if log_level == 'ERROR': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.ERROR)
         if log_level == 'INFO': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
         if self.ngw_url.endswith('/'): self.ngw_url = self.ngw_url.rstrip('/')
         if not self.ngw_url.lower().startswith('https://'): raise ValueError('url should use HTTPS ')
@@ -872,20 +872,21 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         self.update_resource_payload(webmap_id,payload)
         return True
 
-    def create_vector_features_ogr(self,layer_id,filepath, debug=False, page_size=100)->bool:
+    def create_vector_features_ogr(self,layer_id,filepath, page_size=100)->bool:
         try:
             from osgeo import ogr, gdal
         except ImportError or ModuleNotFoundError as e:
             raise ModuleNotFoundError('This method require Python GDAL bindings') from e
 
         gdal.UseExceptions()
+        
         ds = gdal.OpenEx(filepath, gdal.OF_VECTOR)
         assert ds is not None
         layer = ds.GetLayer()
         assert layer is not None
 
         url = 'NGW:' + self.ngw_url + '/resource/' + str(layer_id)
-        if debug:
+        if self.log_level in ('DEBUG','ERROR'): 
             gdal.SetConfigOption('CPL_DEBUG', 'ON')
             gdal.SetConfigOption('CPL_LOG_ERRORS', 'ON')
         assert isinstance(page_size, int)
