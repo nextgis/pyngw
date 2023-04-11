@@ -25,7 +25,10 @@ print(ngwapi.get_childs_resources(0))
 ## Search and helpers
 
 * get_resource
-* get_childs_resources(resource_group_id)
+* get_childs_resources(resource_group_id) 
+     wraper for query ?parent=
+* get_childs_ids_recursive(resource_id) -> list 
+    return list of ids of resources element tree. Usedul for batch change resources
 * get_feature_count(layer_id) -> int
 * search_group_by_name(name,group_id=0) -> int
 * search_by_cls(group_id=0,cls='webmap') -> list
@@ -33,8 +36,8 @@ print(ngwapi.get_childs_resources(0))
 * download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
 * download_qgis_style(path,style_id)
 * get_TMS_url(resource_id) -> str
-* get_childs_resources(resource_group_id) # wraper for query ?parent=
 * get_styles_from_webmap_top
+
 
 ## Edit
 
