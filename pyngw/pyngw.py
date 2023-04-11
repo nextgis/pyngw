@@ -809,6 +809,21 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         request = requests.get(url, auth=self.ngw_creds)
         response = request.json()
         return response
+    
+    def get_childs_ids_recursive(self,resource_id)->list():
+        # get flat list of ids of element resource tree
+        # useful for loop call of change_resource_payload
+        ids = list()
+        childs = self.get_childs_resources(resource_id)
+        for child in childs:
+            new_resource_id = child['resource']['id']    
+            ids = ids + self.get_childs_ids_recursive(new_resource_id)
+            if new_resource_id not in ids: ids.append(new_resource_id)
+        if resource_id not in ids: ids.append(resource_id)
+        return ids
+
+
+
 
     def upload_qmls_byname(self,resource_group_id,qml_path):
         response = self.get_childs_resources(resource_group_id)
