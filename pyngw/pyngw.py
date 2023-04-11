@@ -810,7 +810,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         response = request.json()
         return response
     
-    def get_childs_ids_recursive(self,resource_id)->list(int):
+    def get_childs_ids_recursive(self,resource_id)->list():
         # get flat list of ids of element resource tree
         # useful for loop call of change_resource_payload
         ids = list()
