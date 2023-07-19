@@ -37,6 +37,8 @@ print(ngwapi.get_childs_resources(0))
 * download_qgis_style(path,style_id)
 * get_TMS_url(resource_id) -> str
 * get_styles_from_webmap_top
+* download_ngw4qgis(group_id,target_path, overwrite=False,use_latest_qml=True)
+    download vector layers from resource group as gpkg files and one qml style. qml style will saved as filename same as layer, so you can open all gpkg in qgis
 
 
 ## Edit

@@ -48,8 +48,6 @@ class Pyngw:
 
         self.logger = logging.getLogger(__name__)
 
-
-
     def search_group_by_name(self,name,group_id=0)->int:
         GROUPNAME = name
 
@@ -631,6 +629,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         assert response.ok
         return response.json()['id']
+
     def replace_vector_layer(self,old_display_name,group_id,filepath) -> int:
         #upload new layer, move vector styles from old to new layer, delete old layer, rename new layer to old
         
@@ -653,7 +652,6 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         payload = {'resource':{'display_name':old_layer_data['resource']['display_name']}}
         self.update_resource_payload(new_layer_id,payload=payload,skip_errors=True)
         return new_layer_id
-        
 
     def get_layers4webmap(self, group_id,namesource='',layer_adapter='tile'):
         """
@@ -822,9 +820,6 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         if resource_id not in ids: ids.append(resource_id)
         return ids
 
-
-
-
     def upload_qmls_byname(self,resource_group_id,qml_path):
         response = self.get_childs_resources(resource_group_id)
 
@@ -923,3 +918,31 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         ds_ngw = None
 
         return True
+        
+    def download_ngw4qgis(self,group_id,filepath,overwrite=False,use_latest_qml=True):
+        #download layers and styles from ngw 
+        #styles renamed to layers name for open in qgis
+        
+        from pathlib import Path
+        Path(filepath).mkdir(parents=True, exist_ok=True)
+        
+        assert os.path.isdir(filepath)
+        
+        vector_layers = self.search_by_cls(group_id,'vector_layer')
+        for layer_id in vector_layers:
+            resource=self.get_resource(layer_id)
+            layer_base_filepath = os.path.join(filepath,resource['resource']['display_name'])
+            
+            layer_filepath = layer_base_filepath+'.gpkg'
+            if overwrite and os.path.isfile(layer_filepath): os.remove(layer_filepath)
+            self.download_vector_layer(layer_filepath, layer_id, 'GPKG', 4326)
+            
+            styles = self.get_childs_resources(layer_id)
+            newlist = sorted(styles, key=lambda d: d['resource']['creation_date'] or 0,reverse=use_latest_qml) 
+            styles=newlist
+            for style in styles:
+                if style['resource']['cls']!='qgis_vector_style': continue
+                qml_filename=layer_base_filepath+'.qml'
+                if overwrite and os.path.isfile(qml_filename): os.remove(qml_filename)
+                self.download_qgis_style(qml_filename, style['resource']['id'])
+        
