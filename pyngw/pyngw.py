@@ -721,13 +721,14 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         assert response.ok
         return response.json()['id']
 
-    def download_vector_layer(self,path,layer_id,format='GeoJSON',srs=4326,zipped=False):
+    def download_vector_layer(self,path,layer_id,format='GeoJSON',srs=4326,zipped=False, intersects=''):
         """Download vector layer
 
         Arguments:
             path {[str]} -- [Path to save file]
             layer_id {[int]} -- [description]
 
+        Keyword Arguments:
         Keyword Arguments:
             format {str} -- [description] (default: {'geojson'})
             srs {int} -- [description] (default: {4326})
@@ -739,16 +740,38 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             zipped_str = 'false'
         else:
             zipped_str = 'true'
-        url = '{url}/api/resource/{layer_id}/export?format={format}&srs={srs}&zipped={zipped_str}&fid=ngw_id&encoding=UTF-8'
+        #if intersects != '':
+        #    intersects='&intersects='+intersects
+        url = '{url}/api/resource/{layer_id}/export'
+        
+        params='format={format}&srs={srs}&zipped={zipped_str}&fid=ngw_id&encoding=UTF-8{intersects}'
+        
         url = url.format(url=self.ngw_url,
-            layer_id = layer_id,
+            layer_id = layer_id)        
+        params = params.format(
             format=format,
             srs=srs,
-            zipped_str=zipped_str)
+            zipped_str=zipped_str,
+            intersects=intersects)
+            
+        params={'format':format,
+        'srs':srs,
+        'zipped':zipped_str,
+        'fid':'ngw_id',
+        'encoding':'UTF-8'}
+        if intersects != '':
+            params['intersects']=intersects
+            params['intersects_srs']=4326
         #https://sandbox.nextgis.com/api/resource/56/export?format=csv&srs=4326&zipped=true&fid=ngw_id&encoding=UTF-8
+        
+        '''
+        URL with geography filter
+        curl 'https://trolleway.nextgis.com/api/resource/4962/export?intersects=POLYGON%28%2830+50%2C30+55%2C35+55%2C35+50%2C30+50%29%29&intersects_srs=4326&format=GPKG&srs=3857&encoding=UTF-8&fid=ngw_id&display_name=false&fields=fid%2Cname_int%2Cdesc_ru&zipped=false' \
+
+        '''
 
         self.logger.debug('download vector layer '+url)
-        response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
+        response = requests.get(url, params=params,stream=True,auth=HTTPBasicAuth(self.login, self.password))
         with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
@@ -919,7 +942,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
 
         return True
         
-    def download_ngw4qgis(self,group_id,filepath,overwrite=False,use_latest_qml=True):
+    def download_ngw4qgis(self,group_id,filepath,overwrite=False,use_latest_qml=True,intersects=''):
         #download layers and styles from ngw 
         #styles renamed to layers name for open in qgis
         
@@ -935,14 +958,22 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             
             layer_filepath = layer_base_filepath+'.gpkg'
             if overwrite and os.path.isfile(layer_filepath): os.remove(layer_filepath)
-            self.download_vector_layer(layer_filepath, layer_id, 'GPKG', 4326)
+            self.download_vector_layer(layer_filepath, layer_id, 'GPKG', 4326,intersects=intersects)
             
             styles = self.get_childs_resources(layer_id)
             newlist = sorted(styles, key=lambda d: d['resource']['creation_date'] or 0,reverse=use_latest_qml) 
             styles=newlist
+            
             for style in styles:
+
                 if style['resource']['cls']!='qgis_vector_style': continue
                 qml_filename=layer_base_filepath+'.qml'
                 if overwrite and os.path.isfile(qml_filename): os.remove(qml_filename)
+
                 self.download_qgis_style(qml_filename, style['resource']['id'])
-        
+                break #download only one qml if many exists
+        '''
+        URL with geography filter
+        curl 'https://trolleway.nextgis.com/api/resource/4962/export?intersects=POLYGON%28%2830+50%2C30+55%2C35+55%2C35+50%2C30+50%29%29&intersects_srs=4326&format=GPKG&srs=3857&encoding=UTF-8&fid=ngw_id&display_name=false&fields=fid%2Cname_int%2Cdesc_ru&zipped=false' \
+
+        '''
