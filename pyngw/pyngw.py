@@ -9,8 +9,6 @@ import shutil
 import logging
 import time
 
-from tusclient.client import TusClient  # requirement in setup.py
-
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
