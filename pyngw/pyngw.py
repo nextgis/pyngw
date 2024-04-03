@@ -9,9 +9,11 @@ import shutil
 import logging
 import time
 
-from tusclient.client import TusClient  # requirement in setup.py
-
 import pprint
+import json
+
+from tusclient.client import TusClient # requirement in setup.py
+
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -104,14 +106,14 @@ class Pyngw:
             req.body,
         ))
 
-    def update_resource_payload(self,resource_id,payload,skip_errors=True):
+    def update_resource_payload(self,resource_id:int,payload,skip_errors=True):
         """ wrapper for PUT query, send payload"""
         assert payload is not None
 
         response = requests.put(self.ngw_url+'/api/resource/'+str(resource_id), json=payload, auth=self.ngw_creds )
         if skip_errors == False: assert response.ok
 
-    def delete_resource_by_id(self,id):
+    def delete_resource_by_id(self,id:int):
         """delete ngw resource
 
         Arguments:
@@ -119,6 +121,19 @@ class Pyngw:
         """
         url=self.ngw_url+'/api/resource/'+str(id)
         request = requests.delete(url, auth=self.ngw_creds)
+        
+    def delete_features(self,resource_id:int,ids:list):
+        """
+        delete features from vector layer by list of features
+        """
+        url=self.ngw_url+'/api/resource/'+str(resource_id)+'/feature/'
+        payload = {}
+        if len(ids)<1: return False
+        
+        payload=[]
+        for id in ids:
+            payload.append({"id":int(id)})
+        request = requests.delete(url, data=json.dumps(payload), auth=self.ngw_creds)
 
     def truncate_group(self,group_id):
         resources = self.get_childs_resources(group_id)
@@ -814,6 +829,24 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         response = request.json()
         return response
 
+    def get_features(self,resource_id:int,params:str='')->list:
+        """  get all features from vector layer as is 
+        params: GET params
+        ?limit=(int:limit)&offset=(int:offset)&intersects=(string:wkt_string)&fields=(string:field_name_1,string:field_name_2,...)&fld_{field_name_1}=(string:value)&fld_{field_name_2}=(string:value)&fld_{field_name_3}__ilike=(string:value)&fld_{field_name_4}__like=(string:value)&extensions=(string:extensions)
+        """
+        url = '{url}/api/resource/{resource_id}/feature/'
+        url = url.format(url=self.ngw_url,
+            resource_id = resource_id)
+        
+        if params != '':
+            url=url+'?'+params
+        
+        request = requests.get(url, auth=self.ngw_creds)
+        response = request.json()
+        return response
+    
+    
+    
     def get_childs_resources(self,resource_group_id):
         """[wraper for GET query ?parent= , with use login-password from class]
 
