@@ -11,6 +11,9 @@ import time
 
 import pprint
 import json
+
+from tusclient.client import TusClient # requirement in setup.py
+
 pp = pprint.PrettyPrinter(indent=4)
 
 
