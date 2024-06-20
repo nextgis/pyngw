@@ -6,9 +6,6 @@ Python client library wraper for NextGIS Web REST API operations.
 python wrapper for NextGIS Web REST API.
 See comments in code
 
-## deleter branch ##
-
-копия для разовой задачи. Выкинуто import tus. Не делать merge requests, можно только копировать новые функции в main
 
 ### Usage ###
 
