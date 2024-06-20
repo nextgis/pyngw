@@ -61,7 +61,14 @@ print(ngwapi.get_childs_resources(0))
 * create_vector_layer(group_id,display_name,geometry_type,fields)
 * upload_vector_layer_tus(parent_id=0, display_name='') #Using tus.io protocol
 * upload_vector_layer_ogr2ogr(filepath,group_id,display_name='',layer=None, geometry_type = None)
-* upload_vector_layer
+* upload_vector_layer(filepath,group_id, display_name='',
+            cast_is_multi=True,
+            cast_has_z=False,
+            skip_other_geometry_types=True,
+            fix_errors='LOSSY',
+            skip_errors=True,
+            fid_source='AUTO',
+            fid_field='ngw_id') #same arguments as on https://docs.nextgis.com/docs_ngweb_dev/doc/developer/create.html#create-vector-layer
 * create_postgis_connection
 * create_postgis_layer
 * create_wms_connection
