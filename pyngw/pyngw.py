@@ -61,6 +61,21 @@ class Pyngw:
             if element['resource']['cls']=='resource_group' and element['resource']['display_name']==GROUPNAME:
                 return element['resource']['id']
         return None
+        
+    def get_resource_id_by_name(self,name,group_id=0)->int:
+        """
+        search resources in group_id, returns id of frist fround resource with name.
+        """
+        SEARCHNAME = name
+
+        url=self.ngw_url+'/api/resource/?parent='+str(group_id)
+        request = requests.get(url, auth=self.ngw_creds)
+        response = request.json()
+
+        for element in response:
+            if element['resource']['display_name']==SEARCHNAME:
+                return element['resource']['id']
+        return None
 
     def get_styles_from_webmap_top(self,resource_id):
         url=self.ngw_url+'/api/resource/'+str(resource_id)
