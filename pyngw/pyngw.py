@@ -11,6 +11,7 @@ import time
 
 import pprint
 import json
+import fnmatch
 
 from tusclient.client import TusClient # requirement in setup.py
 
@@ -61,6 +62,28 @@ class Pyngw:
             if element['resource']['cls']=='resource_group' and element['resource']['display_name']==GROUPNAME:
                 return element['resource']['id']
         return None
+    
+    def search_resource(self)->list:
+        raise NotImplementedError
+        """
+        Method name for wrapper of ngw api search method
+        """
+    
+    def search_resource_by_name(self,name,group_id=0,cls='')->list:
+        """ 
+        Search by name with wildcards, not using api method /search
+        """
+        url=self.ngw_url+'/api/resource/?parent='+str(group_id)
+        request = requests.get(url, auth=self.ngw_creds)
+        response = request.json()
+        
+        results=list()
+
+        for element in response:
+            if cls='' or (cls != '' and element['resource']['cls']=='cls'):
+                if name = element['resource']['display_name'] or fnmatch.fnmatch(element['resource']['display_name'], name):
+                    results.append(element)
+        return results
         
     def get_resource_id_by_name(self,name,group_id=0)->int:
         """

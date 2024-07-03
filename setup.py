@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pyngw", # Replace with your own username
+    name="pyngw", 
     version="1.0.0",
     author="Artem Svetlov",
     author_email="artem.svetlov@nextgis.com",
@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
           'tuspy',
+          'fnmatch'
       ],
     classifiers=[
         "Programming Language :: Python :: 3",
