@@ -38,10 +38,10 @@ print(ngwapi.get_childs_resources(0))
 
 ## Search
 
-* search_group_by_name(name,group_id=0) -> int
-	search subgroups in group_id, returns id of frist fround resource group with this name.
 * get_resource_id_by_name(name,group_id=0) -> int
-	search resources in group_id, returns id of frist fround resource with this name.
+	read resource names in group_id, returns id of frist found resource with this name.
+* search_resource_by_name(name,group_id=0,cls='') -> list	
+	   Search by name with wildcards, not using api method /search. Returns list of dicts.
 * search_by_cls(group_id=0,cls='webmap') -> list
 * get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  # Return list with layers for create_webmap
 * download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
