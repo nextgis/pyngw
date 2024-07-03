@@ -12,6 +12,7 @@ import time
 import pprint
 import json
 import fnmatch
+from warnings import warn
 
 from tusclient.client import TusClient # requirement in setup.py
 
@@ -52,6 +53,8 @@ class Pyngw:
         self.logger = logging.getLogger(__name__)
 
     def search_group_by_name(self,name,group_id=0)->int:
+        warn('This is deprecated. Use get_resource_id_by_name or search_resource_by_name', DeprecationWarning, stacklevel=2)
+        
         GROUPNAME = name
 
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
