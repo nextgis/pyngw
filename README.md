@@ -328,8 +328,8 @@ if __name__ == "__main__":
 
 Two functions for search:
 
-- get_resource_id_by_name(name,group_id): return if of frist found resource
-- search_resource_by_name(name,group_id=0,cls='') : returns list of dicts, or empty list. Accepted wildcards: `*` `?`, see https://docs.python.org/3/library/fnmatch.html for refrence
+- get_resource_id_by_name(name,group_id): return id of frist found resource
+- search_resource_by_name(name,group_id=0,cls=''): returns list of dicts, or empty list. Accepted wildcards: `*` `?`, see https://docs.python.org/3/library/fnmatch.html for refrence
 
 ```
 import pyngw
