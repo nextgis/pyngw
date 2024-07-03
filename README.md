@@ -323,3 +323,30 @@ if __name__ == "__main__":
 
 
 ```
+
+## Search resources
+
+Two functions for search:
+
+- get_resource_id_by_name(name,group_id): return if of frist found resource
+- search_resource_by_name(name,group_id=0,cls='') : returns list of dicts, or empty list. Accepted wildcards: `*` `?`, see https://docs.python.org/3/library/fnmatch.html for refrence
+
+```
+import pyngw
+ngwapi = pyngw.Pyngw(ngw_url = 'https://sandbox.nextgis.com', login = 'administrator', password = 'demodemo')
+
+
+ngwapi.get_resource_id_by_name('parks',group_id=3)
+9
+ngwapi.search_resource_by_name('parks',group_id=3)[0]['resource']['id']
+9
+
+# search vector layer in group by name
+len(ngwapi.search_resource_by_name('places to eat',group_id=3,cls='vector_layer'))
+1
+# search resource by name with wildcards
+ len(ngwapi.search_resource_by_name('places to *',group_id=3,cls='vector_layer'))
+1
+ngwapi.search_resource_by_name('places to ???',group_id=3,cls='vector_layer')[0]['resource']['id']
+7
+```

@@ -74,7 +74,7 @@ class Pyngw:
     
     def search_resource_by_name(self,name,group_id=0,cls='')->list:
         """ 
-        Search by name with wildcards, not using api method /search
+        Search by name with wildcards, not using api method /search. Returns list of dicts.
         """
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
         request = requests.get(url, auth=self.ngw_creds)
