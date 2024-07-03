@@ -84,7 +84,7 @@ class Pyngw:
 
         for element in response:
             if cls=='' or (cls != '' and element['resource']['cls']=='cls'):
-                if name = element['resource']['display_name'] or fnmatch.fnmatch(element['resource']['display_name'], name):
+                if name == element['resource']['display_name'] or fnmatch.fnmatch(element['resource']['display_name'], name):
                     results.append(element)
         return results
         
