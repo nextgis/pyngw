@@ -1051,3 +1051,33 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         curl 'https://trolleway.nextgis.com/api/resource/4962/export?intersects=POLYGON%28%2830+50%2C30+55%2C35+55%2C35+50%2C30+50%29%29&intersects_srs=4326&format=GPKG&srs=3857&encoding=UTF-8&fid=ngw_id&display_name=false&fields=fid%2Cname_int%2Cdesc_ru&zipped=false' \
 
         '''
+
+    def check_resource_id(self,resource_id)->bool:
+        '''
+        return True if api return ok for given resource id
+        '''
+        
+        #empty is valid value for ngw url, it redirects to resource 0, but this method will return False, because there is no resource named '', it named '0'
+        if str(resource_id)=='': return False
+        
+        try:
+            url=self.ngw_url+'/api/resource/'+str(resource_id)
+            request = requests.get(url, auth=self.ngw_creds)
+            if request.status_code == 200:
+                return True
+        except:
+            return False
+
+        return False
+        
+    def check_ngw_url(self)->bool:
+
+        try:
+            url=self.ngw_url+'/api/component/pyramid/pkg_version'
+            request = requests.get(url, auth=self.ngw_creds)
+            if request.status_code == 200:
+                return True
+            else:
+                return False
+        except:
+            return False
