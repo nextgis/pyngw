@@ -38,7 +38,8 @@ print(ngwapi.get_childs_resources(0))
 
 ## Search
 
-* is_id_exist(resource_id) -> bool
+* check_resource_id(resource_id) -> bool
+* check_ngw_url() -> bool
  	return true if id exist in ngw
 * get_resource_id_by_name(name,group_id=0) -> int
 	read resource names in group_id, returns id of frist found resource with this name.
