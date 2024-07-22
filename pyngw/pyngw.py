@@ -1062,5 +1062,5 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             if response.status_code == 200:
                 return True
         except:
-            reuturn False
+            return False
         return False
