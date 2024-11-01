@@ -54,8 +54,8 @@ print(ngwapi.get_childs_resources(0))
 
 ## Edit
 
-* replace_qgis_style
-* webmap_reorder_layers_by_list
+* replace_qgis_style(filepath,style_id) -> dict
+* webmap_reorder_layers_by_list(webmap_id, orderlist) -> bool
 * update_resource_payload(resource_id,payload,skip_errors=True)
 * webmap_set_extent_by_layer(webmap_id,layer_id) -> bool
 * replace_vector_layer(old_display_name,group_id,filepath) -> int
