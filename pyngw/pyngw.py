@@ -626,7 +626,7 @@ class Pyngw:
 
         for element in webmap['webmap']['root_item']['children']:
             wms_layer = {
-             "keyname": element["layer_style_id"],
+             "keyname": 'layer_'+str(element["layer_style_id"]),
              "display_name": element["display_name"],
              "resource_id": element["layer_style_id"],
              "min_scale_denom":None,"max_scale_denom":None
