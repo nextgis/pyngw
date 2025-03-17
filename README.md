@@ -26,8 +26,8 @@ print(ngwapi.get_childs_resources(0))
 
 * check_resource_id(resource_id) -> bool
   	return True if id exist in ngw
-* check_ngw_url(url) -> bool
-  	return True if ngw answer on this URL
+* check_ngw_url() -> bool
+  	return True if ngw answer on URL provided in pyngw constructor
  	
 ## Get 
 
