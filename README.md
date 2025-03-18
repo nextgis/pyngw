@@ -22,6 +22,13 @@ print(ngwapi.get_childs_resources(0))
 
 # Function list
 
+## Connect to NextGIS Web
+
+### Connect with password
+* ngwapi = pyngw.Pyngw(ngw_url = 'https://sandbox.nextgis.com', login = 'administrator', password = 'demodemo')
+### Connect as guest
+* ngwapi = pyngw.Pyngw(ngw_url = 'https://sandbox.nextgis.com') 
+
 ## Check URL
 
 * check_resource_id(resource_id) -> bool
