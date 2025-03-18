@@ -41,7 +41,6 @@ class Pyngw:
         self.ngw_url=ngw_url
         self.login=login
         self.password=password
-        self.ngw_creds=(self.login,self.password)
         if self.login is None and self.password is None:
             self.ngw_creds = None
         else:
