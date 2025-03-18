@@ -30,7 +30,7 @@ class Pyngw:
 
     '''
 
-    def __init__(self,ngw_url='https://sandbox.nextgis.com',login='administrator',password='demodemo',log_level='ERROR'):
+    def __init__(self,ngw_url='https://sandbox.nextgis.com',login=None,password=None,log_level='ERROR'):
         """[create api instance with stored login and passwords]
 
         Keyword Arguments:
