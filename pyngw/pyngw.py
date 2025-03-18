@@ -42,6 +42,10 @@ class Pyngw:
         self.login=login
         self.password=password
         self.ngw_creds=(self.login,self.password)
+        if self.login is None and self.password is None:
+            self.ngw_creds = None
+        else:
+            self.ngw_creds=(self.login,self.password)
         self.log_level = log_level
 
         if log_level == 'DEBUG': logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
