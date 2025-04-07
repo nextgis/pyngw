@@ -86,7 +86,7 @@ print(ngwapi.get_childs_resources(0))
             fix_errors='LOSSY',
             skip_errors=True,
             fid_source='AUTO',
-            fid_field='ngw_id') #same arguments as on https://docs.nextgis.com/docs_ngweb_dev/doc/developer/create.html#create-vector-layer
+            fid_field=None) #same arguments as on https://docs.nextgis.com/docs_ngweb_dev/doc/developer/create.html#create-vector-layer
 * create_postgis_connection
 * create_postgis_layer
 * create_wms_connection

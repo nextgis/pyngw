@@ -317,7 +317,7 @@ class Pyngw:
             fix_errors='LOSSY',
             skip_errors=True,
             fid_source='AUTO',
-            fid_field='ngw_id'):
+            fid_field=None):
         """[Create vector layer from file]
 
         Arguments:
@@ -349,10 +349,10 @@ class Pyngw:
      skip_other_geometry_types= skip_other_geometry_types,
      fix_errors= fix_errors,
      skip_errors= skip_errors,
-     fid_source= fid_source,
-     fid_field= fid_field
+     fid_source= fid_source
      )
         )
+        if fid_field is not None: payload['vector_layer']['fid_field']=fid_field
 
         vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         return vector_layer.json()['id']
