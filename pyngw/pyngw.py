@@ -354,10 +354,10 @@ class Pyngw:
         )
         if fid_field is not None: payload['vector_layer']['fid_field']=fid_field
 
-        vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        response_json = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
         if response_json.get('exception'):
             raise ValueError(f"{response_json.get('exception')}: {response_json.get('message', '')}")
-        return vector_layer.json()['id']
+        return response_json.json()['id']
 
     def create_postgis_connection(self,group_id=0, display_name='',hostname='localhost',port=54321,database='gis',username='',password=''):
         """[Create PostGIS connection in ngw]
