@@ -313,7 +313,7 @@ class Pyngw:
     def upload_vector_layer(self,filepath,group_id, display_name='',
             cast_is_multi=True,
             cast_has_z=False,
-            skip_other_geometry_types=True,
+            skip_other_geometry_types=False,
             fix_errors='LOSSY',
             skip_errors=True,
             fid_source='AUTO',
@@ -355,6 +355,8 @@ class Pyngw:
         if fid_field is not None: payload['vector_layer']['fid_field']=fid_field
 
         vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        if response_json.get('exception'):
+            raise ValueError(f"{response_json.get('exception')}: {response_json.get('message', '')}")
         return vector_layer.json()['id']
 
     def create_postgis_connection(self,group_id=0, display_name='',hostname='localhost',port=54321,database='gis',username='',password=''):
