@@ -41,12 +41,14 @@ print(ngwapi.get_childs_resources(0))
 * get_resource(resource_id) -> dict 
 	wraper for query GET
 * get_childs_resources(resource_group_id) 
-     wraper for query GET ?parent=
+	Get child resources of parent resource: resource group, or layer with styles. wraper for query GET ?parent= 
 * get_childs_ids_recursive(resource_id) -> list 
     return list of ids of resources element tree. Usedul for batch change resources
 * get_feature_count(layer_id) -> int
+  	Obtain count of features in vector layer
 * get_features(self,resource_id:int,params:str='')->list:
 * get_TMS_url(resource_id) -> str
+  	Get URL of Tile Map Service protocol for map style
 * get_styles_from_webmap_top
 * download_ngw4qgis(group_id,target_path, overwrite=False,use_latest_qml=True, intersects=wkt_string)
 
@@ -59,6 +61,7 @@ print(ngwapi.get_childs_resources(0))
 * search_by_cls(group_id=0,cls='webmap') -> list
 * get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  # Return list with layers for create_webmap
 * download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
+	Download NextGIS Web vector layer as GeoJSON or GeoPackage file
 * download_qgis_style(path,style_id)
     download vector layers from resource group as gpkg files and one qml style. qml style will saved as filename same as layer, so you can open all gpkg in qgis
 
