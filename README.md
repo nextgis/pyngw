@@ -51,6 +51,8 @@ print(ngwapi.get_childs_resources(0))
   	Get URL of Tile Map Service protocol for map style
 * get_styles_from_webmap_top
 * download_ngw4qgis(group_id,target_path, overwrite=False,use_latest_qml=True, intersects=wkt_string)
+* get_resource_url(resource_id)->str
+     Get URL of resource
 
 ## Search
 

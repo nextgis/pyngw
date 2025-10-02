@@ -891,7 +891,14 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         request = requests.get(url, auth=self.ngw_creds)
         response = request.json()
         return response
-    
+
+
+    def get_resource_url(self,resource_id)->str:
+        """  return url of resource, like https://sandbox.nextgis.com/resourse/1234 """
+        url = '{url}/api/resource/{resource_id}'
+        url = url.format(url=self.ngw_url,
+            resource_id = resource_id)
+        return url    
     
     
     def get_childs_resources(self,resource_group_id):
