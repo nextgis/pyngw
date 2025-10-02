@@ -53,6 +53,8 @@ print(ngwapi.get_childs_resources(0))
 * download_ngw4qgis(group_id,target_path, overwrite=False,use_latest_qml=True, intersects=wkt_string)
 * get_resource_url(resource_id)->str
      Get URL of resource
+* get_resource_name(resource_id)->str
+     Get name of resource
 
 ## Search
 

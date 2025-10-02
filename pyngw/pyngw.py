@@ -899,7 +899,12 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         url = url.format(url=self.ngw_url,
             resource_id = resource_id)
         return url    
-    
+
+    def get_resource_name(self,resource_id)->str:
+        """  return name of resource """
+        resource = self.get_resource(resource_id)
+        return resource['resource']['display_name']
+ 
     
     def get_childs_resources(self,resource_group_id):
         """[wraper for GET query ?parent= , with use login-password from class]
