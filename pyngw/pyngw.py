@@ -536,12 +536,6 @@ class Pyngw:
         }
 
         raster_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
-        if raster_layer.status_code != 201:
-            print
-            pp.pprint(file_upload_result.json())
-            print
-            pp.pprint(payload)
-            pp.pprint(raster_layer.json())
         return raster_layer.json()['id']
 
     def upload_geojson(self,filepath,group_id):
