@@ -1082,12 +1082,17 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
 
         return False
         
-    def check_ngw_url(self)->bool:
-
+    def check_ngw_url(self) -> bool:
+        '''
+        Check if input URL is URL of NGW Web GIS 
+        '''
         try:
-            url=self.ngw_url+'/api/component/pyramid/pkg_version'
+            url = self.ngw_url + "/api/component/pyramid/pkg_version"
             request = requests.get(url, auth=self.ngw_creds)
             if request.status_code == 200:
+                request_json = request.json()
+                if "nextgisweb" not in request_json.keys():
+                    return False
                 return True
             else:
                 return False
