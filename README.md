@@ -55,7 +55,16 @@ print(ngwapi.get_childs_resources(0))
      Get URL of resource
 * get_resource_name(resource_id)->str
      Get name of resource
+* get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  
+     Return list with layers for create_webmap
 
+## Download
+
+* download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
+	Download NextGIS Web vector layer as GeoJSON or GeoPackage file
+* download_qgis_style(path,style_id)
+    download vector layers from resource group as gpkg files and one qml style. qml style will saved as filename same as layer, so you can open all gpkg in qgis
+  
 ## Search
 
 * get_resource_id_by_name(name,group_id=0) -> int
@@ -63,11 +72,7 @@ print(ngwapi.get_childs_resources(0))
 * search_resource_by_name(name,group_id=0,cls='') -> list	
 	   Search by name with wildcards, not using api method /search. Returns list of dicts.
 * search_by_cls(group_id=0,cls='webmap') -> list
-* get_layers4webmap(group_id,namesource='',layer_adapter='tile') -> dict  # Return list with layers for create_webmap
-* download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
-	Download NextGIS Web vector layer as GeoJSON or GeoPackage file
-* download_qgis_style(path,style_id)
-    download vector layers from resource group as gpkg files and one qml style. qml style will saved as filename same as layer, so you can open all gpkg in qgis
+
 
 
 ## Edit
