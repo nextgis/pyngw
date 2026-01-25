@@ -135,7 +135,7 @@ ngwapi.get_childs_resources(resource_id)
 
 
 ## Upload QML styles by names
-В NGW загружены векторные слои. Добавить к ним стили, которые лежат на диске с совпадающими названиями
+Vector layers are loaded in NGW. Add styles to them that are located on the disk with matching names.
 
 ```
  ngwapi.upload_qmls_byname(group_id,'qml')
