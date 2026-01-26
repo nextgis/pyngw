@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from requests.auth import HTTPBasicAuth
 import os
 import datetime
 import shutil
@@ -827,7 +826,8 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         '''
 
         self.logger.debug('download vector layer '+url)
-        response = requests.get(url, params=params,stream=True,auth=HTTPBasicAuth(self.login, self.password))
+        response = requests.get(url, params=params,stream=True,auth=self.ngw_creds)
+        response.raise_for_status()
         with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
@@ -848,7 +848,8 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             resource_id = resource_id
             )
 
-        response = requests.get(url, stream=True,auth=HTTPBasicAuth(self.login, self.password))
+        response = requests.get(url, stream=True,auth=self.ngw_creds)
+        response.raise_for_status()
         open(path, 'wb').write(response.content)
         del response
 
