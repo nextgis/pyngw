@@ -799,7 +799,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         response.raise_for_status()
         return response.json()['id']
 
-    def download_vector_layer(self,path,layer_id,format='GeoJSON',srs=4326,zipped=False, intersects=''):
+    def download_vector_layer(self,path,layer_id,format='GeoJSON',srs=4326,zipped=False, intersects='',fid=None):
         """Download vector layer
 
         Arguments:
@@ -818,11 +818,14 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             zipped_str = 'false'
         else:
             zipped_str = 'true'
-        #if intersects != '':
-        #    intersects='&intersects='+intersects
+        if fid is not None:
+            fid='&fid='+fid
+        else:
+            fid=''
+
         url = '{url}/api/resource/{layer_id}/export'
         
-        params='format={format}&srs={srs}&zipped={zipped_str}&fid=ngw_id&encoding=UTF-8{intersects}'
+        params='format={format}&srs={srs}&zipped={zipped_str}{fid}&encoding=UTF-8{intersects}'
         
         url = url.format(url=self.ngw_url,
             layer_id = layer_id)        
@@ -830,7 +833,8 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             format=format,
             srs=srs,
             zipped_str=zipped_str,
-            intersects=intersects)
+            intersects=intersects,
+            fid=fid)
             
         params={'format':format,
         'srs':srs,
