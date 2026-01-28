@@ -62,6 +62,7 @@ class Pyngw:
 
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
 
         for element in response:
@@ -81,6 +82,7 @@ class Pyngw:
         """
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
         
         results=list()
@@ -99,6 +101,7 @@ class Pyngw:
 
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
 
         for element in response:
@@ -109,6 +112,7 @@ class Pyngw:
     def get_styles_from_webmap_top(self,resource_id):
         url=self.ngw_url+'/api/resource/'+str(resource_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
 
         found_ids = list()
@@ -119,6 +123,7 @@ class Pyngw:
     def get_feature_count(self,resource_id):
         url=self.ngw_url+'/api/resource/'+str(resource_id)+'/feature_count'
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
         feature_count = response.get('total_count',None)
         if feature_count is not None:
@@ -130,6 +135,7 @@ class Pyngw:
 
         url=self.ngw_url+'/api/resource/?parent='+str(group_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
 
         found_ids = list()
@@ -165,6 +171,7 @@ class Pyngw:
         """
         url=self.ngw_url+'/api/resource/'+str(id)
         request = requests.delete(url, auth=self.ngw_creds)
+        request.raise_for_status()
         
     def delete_features(self,resource_id:int,ids:list):
         """
@@ -178,6 +185,7 @@ class Pyngw:
         for id in ids:
             payload.append({"id":int(id)})
         request = requests.delete(url, data=json.dumps(payload), auth=self.ngw_creds)
+        request.raise_for_status()
 
     def truncate_group(self,group_id):
         resources = self.get_childs_resources(group_id)
@@ -237,8 +245,7 @@ class Pyngw:
 
         url=self.ngw_url+'/api/resource/'
         request = requests.post(url, json = payload, auth=self.ngw_creds)
-
-        assert request.status_code == 201
+        request.raise_for_status()
 
         response = request.json()
         group_id = response['id']
@@ -297,6 +304,7 @@ class Pyngw:
         furl = uploader.url
         self.logger.debug('uploader_url='+furl)
         file_upload_result = requests.get(furl , auth=self.ngw_creds )
+        file_upload_result.raise_for_status()
 
         self.logger.debug('file_upload_result = '+str(file_upload_result.json()))
         payload=dict(
@@ -307,6 +315,7 @@ class Pyngw:
         )
 
         vector_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        vector_layer.raise_for_status()
         return vector_layer.json()['id']
 
     def upload_vector_layer(self,filepath,group_id, display_name='',
@@ -335,6 +344,7 @@ class Pyngw:
 
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
+            file_upload_result.raise_for_status()
 
         payload=dict(
             resource=dict(cls='vector_layer', parent=dict(id=group_id), display_name=display_name, 
@@ -354,6 +364,7 @@ class Pyngw:
         if fid_field is not None: payload['vector_layer']['fid_field']=fid_field
 
         layer_create_response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        layer_create_response.raise_for_status()
         if layer_create_response.json().get('exception'):
             raise ValueError(layer_create_response.json().get('exception') +': '+ layer_create_response.json().get('message', ''))
         return layer_create_response.json()['id']
@@ -394,6 +405,7 @@ class Pyngw:
         }
 
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
+        response.raise_for_status()
         assert response.status_code == 201
         postgis_connection_id = response.json()['id']
         return postgis_connection_id
@@ -436,7 +448,7 @@ class Pyngw:
         }
 
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
-        assert response.status_code == 201
+        response.raise_for_status()
         postgis_layer = response.json()['id']
         return postgis_layer
 
@@ -474,7 +486,7 @@ class Pyngw:
         #"https://mrdata.usgs.gov/services/kb"
 
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
-        assert response.status_code == 201
+        response.raise_for_status()
         wms_connection_id = response.json()['id']
         return wms_connection_id
 
@@ -501,7 +513,7 @@ class Pyngw:
             }
         }
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
-        assert response.status_code == 201
+        response.raise_for_status()
         wms_layer = response.json()['id']
         return wms_layer
 
@@ -521,6 +533,7 @@ class Pyngw:
         if display_name == '': display_name = self.generate_name()
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
+            file_upload_result.raise_for_status()
 
         payload = {
         "resource": {
@@ -534,7 +547,8 @@ class Pyngw:
         }
         }
 
-        raster_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        raster_layer = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds)
+        raster_layer.raise_for_status()
         return raster_layer.json()['id']
 
     def upload_geojson(self,filepath,group_id):
@@ -556,6 +570,7 @@ class Pyngw:
             resource=dict(cls='raster_style', parent=dict(id=layer_id), display_name=display_name),
         )
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        response.raise_for_status()
         return response.json()['id']
 
     def upload_qgis_style(self,filepath,layer_id,display_name='', skip_errors = False):
@@ -565,12 +580,14 @@ class Pyngw:
         self.logger.debug("upload style "+ filepath + ' to '+ self.ngw_url+'/api/resource/'+str(layer_id) + '    '+display_name)
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
+            file_upload_result.raise_for_status()
         payload=dict(
             resource=dict(cls='qgis_vector_style', parent=dict(id=layer_id), display_name=display_name),
 
         qgis_vector_style=dict(file_upload=file_upload_result.json())
         )
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        response.raise_for_status()
         return response.json()['id']
 
     def replace_qgis_style(self,filepath,style_id):
@@ -579,10 +596,12 @@ class Pyngw:
 
         with open(filepath, 'rb') as fd:
             file_upload_result = requests.put(self.ngw_url + '/api/component/file_upload/upload', data=fd)
+            file_upload_result.raise_for_status()
         payload=dict(
                         qgis_vector_style=dict(id=style_id,file_upload=file_upload_result.json())
         )
         response = requests.put(self.ngw_url+'/api/resource/'+str(style_id), json=payload, auth=self.ngw_creds )
+        response.raise_for_status()
 
         return response.json()
 
@@ -615,6 +634,7 @@ class Pyngw:
         }
 
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        response.raise_for_status()
         return response.json()['id']
 
     def create_wms_from_webmap(self,webmap_id, display_name='autogenerated_wfs_service'):
@@ -646,11 +666,13 @@ class Pyngw:
         }
 
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
+        response.raise_for_status()
         return response.json()['id']
 
     def create_vector_feature(self,layer_id,geom,fields)->int:
         payload = {"geom": geom, "fields": fields}
         response = requests.post(self.ngw_url+'/api/resource/'+str(layer_id)+'/feature/', json=payload, auth=self.ngw_creds )
+        response.raise_for_status()
 
         return response.json()['id']
         '''
@@ -682,7 +704,8 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         }
         }
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
-        assert response.ok
+        response.raise_for_status()
+
         return response.json()['id']
 
     def replace_vector_layer(self,old_display_name,group_id,filepath) -> int:
@@ -773,7 +796,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
 
 
         response = requests.post(self.ngw_url+'/api/resource/', json=payload, auth=self.ngw_creds )
-        assert response.ok
+        response.raise_for_status()
         return response.json()['id']
 
     def download_vector_layer(self,path,layer_id,format='GeoJSON',srs=4326,zipped=False, intersects=''):
@@ -868,6 +891,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         url = url.format(url=self.ngw_url,
             resource_id = resource_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
         return response
 
@@ -884,6 +908,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             url=url+'?'+params
         
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
         return response
 
@@ -915,6 +940,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         url = url.format(url=self.ngw_url,
             resource_group_id = resource_group_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
         return response
     
@@ -972,8 +998,9 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
 
         url=self.ngw_url+'/api/resource/'+str(webmap_id)
         response = requests.put(url, json = payload, auth=self.ngw_creds)
+        response.raise_for_status()
 
-        assert response.ok
+        response.raise_for_status()
 
         return True
 
@@ -985,6 +1012,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         url = url.format(url=self.ngw_url,
             resource_id = layer_id)
         request = requests.get(url, auth=self.ngw_creds)
+        request.raise_for_status()
         response = request.json()
         extent = response['extent']
 
@@ -1076,6 +1104,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         try:
             url=self.ngw_url+'/api/resource/'+str(resource_id)
             request = requests.get(url, auth=self.ngw_creds)
+            request.raise_for_status()
             if request.status_code == 200:
                 return True
         except:
@@ -1090,6 +1119,7 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
         try:
             url = self.ngw_url + "/api/component/pyramid/pkg_version"
             request = requests.get(url, auth=self.ngw_creds)
+            request.raise_for_status()
             if request.status_code == 200:
                 request_json = request.json()
                 if "nextgisweb" not in request_json.keys():
