@@ -60,7 +60,7 @@ print(ngwapi.get_childs_resources(0))
 
 ## Download
 
-* download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False)
+* download_vector_layer(path,layer_id,format='geojson',srs=4326,zipped=False,fid=None)
 	Download NextGIS Web vector layer as GeoJSON or GeoPackage file
 * download_qgis_style(path,style_id)
     download vector layers from resource group as gpkg files and one qml style. qml style will saved as filename same as layer, so you can open all gpkg in qgis
