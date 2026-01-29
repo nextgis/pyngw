@@ -818,32 +818,22 @@ curl -d '{ "resource":{"cls":"vector_layer", "parent":{"id":0}, "display_name":"
             zipped_str = 'false'
         else:
             zipped_str = 'true'
-        if fid is not None:
-            fid='&fid='+fid
-        else:
-            fid=''
 
         url = '{url}/api/resource/{layer_id}/export'
-        
-        params='format={format}&srs={srs}&zipped={zipped_str}{fid}&encoding=UTF-8{intersects}'
-        
+
         url = url.format(url=self.ngw_url,
             layer_id = layer_id)        
-        params = params.format(
-            format=format,
-            srs=srs,
-            zipped_str=zipped_str,
-            intersects=intersects,
-            fid=fid)
+
             
         params={'format':format,
         'srs':srs,
         'zipped':zipped_str,
-        'fid':'ngw_id',
         'encoding':'UTF-8'}
         if intersects != '':
             params['intersects']=intersects
             params['intersects_srs']=4326
+        if fid is not None:
+            params['fid']=fid
         #https://sandbox.nextgis.com/api/resource/56/export?format=csv&srs=4326&zipped=true&fid=ngw_id&encoding=UTF-8
         
         '''
