@@ -80,6 +80,7 @@ print(ngwapi.get_childs_resources(0))
 * replace_qgis_style(filepath,style_id) -> dict
 * webmap_reorder_layers_by_list(webmap_id, orderlist) -> bool
 * update_resource_payload(resource_id,payload,skip_errors=True)
+* update_feature_payload(resource_id,feature_id,payload,skip_errors=True) update feature payload, e.g. description
 * webmap_set_extent_by_layer(webmap_id,layer_id) -> bool
 * replace_vector_layer(old_display_name,group_id,filepath) -> int
 
@@ -199,6 +200,13 @@ for layer in layers:
             print('update '+str(style_id))
             ngwapi.update_resource_payload(style_id,payload)
 
+```
+
+## Update a feature's description
+
+```
+feature_payload = {"extensions": {"description": "<p>Updated description</p>"}}
+ngwapi.update_feature_payload(layer_id=14, feature_id=1, payload=feature_payload, skip_errors=False)
 ```
 
 ## Sort layers in webmap using text strings
