@@ -163,6 +163,20 @@ class Pyngw:
         response = requests.put(self.ngw_url+'/api/resource/'+str(resource_id), json=payload, auth=self.ngw_creds )
         if skip_errors == False: assert response.ok
 
+    def update_feature_payload(self,resource_id:int,feature_id:int,payload,skip_errors=True):
+        """Update a feature in a vector layer.
+
+        Arguments:
+            resource_id {int} -- resource id of the vector layer
+            feature_id {int} -- id of the feature to update
+            payload {dict} -- feature data payload (e.g., {'extensions': {...}})
+            skip_errors {bool} -- if False, raises AssertionError on HTTP error (default True)
+        """
+        assert payload is not None
+
+        response = requests.put(self.ngw_url+'/api/resource/'+str(resource_id)+'/feature/'+str(feature_id), json=payload, auth=self.ngw_creds )
+        if skip_errors == False: assert response.ok
+
     def delete_resource_by_id(self,id:int):
         """delete ngw resource
 
